@@ -22,7 +22,7 @@ Vagrant::Config.run do |config|
   # Load and apply a chef recipe
   config.vm.provision :chef_solo do |chef|
     # Add recipes and attributes:
-    chef.add_recipe  "devudo::aegir-devmaster-dev"
+    chef.add_recipe local_config[:recipe]
     chef.json = { :aegir => { :client_email => local_config[:email] }}
   end
   
