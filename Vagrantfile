@@ -16,11 +16,9 @@ Vagrant::Config.run do |config|
   config.vm.provision :chef_solo do |chef|
     # Add recipes and attributes:
     chef.add_recipe local["vagrant"]["recipe"]
-    chef.json = {:aegir => {}, :mysql => {}}
-    chef.json[:aegir][:client_email] = local["aegir"]["client_email"]
-    chef.json[:mysql][:server_root_password] = local["mysql"]["server_root_password"]
-    chef.json[:mysql][:server_debian_password] = local["mysql"]["server_root_password"]
-    chef.json[:mysql][:server_repl_password] = local["mysql"]["server_root_password"]
+    chef.json = local
+    chef.json["mysql"]["server_debian_password"] = local["mysql"]["server_root_password"]
+    chef.json["mysql"]["server_repl_password"] = local["mysql"]["server_root_password"]
   end
   
   # Hook up your source code folder to the right places in the VM
