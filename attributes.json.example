@@ -1,14 +1,19 @@
 {
  "vagrant": {
   "host_name": "devmaster.localhost",
-  "adapter": "eth0",
-  "recipe": "devudo::aegir-devmaster",
+  "adapter": "wlan0",
   "source_path":  "/home/jon/Repos"
  },
  "aegir": {
   "client_email": "jon@thinkdrop.net"
  },
 "mysql": {
-  "server_root_password": "ForChefSoloYouMustSaveYourRootPassword"
- }
+  "server_root_password": "ForChefSoloYouMustSaveYourRootPassword",
+  "server_debian_password": "ForChefSoloYouMustSaveYourRootPassword",
+  "server_repl_password": "ForChefSoloYouMustSaveYourRootPassword",
+ },
+ "run_list": [
+   "recipe[devudo::vagrant]",
+   "recipe[devudo::aegir-devmaster-dev]"
+ ]
 }
