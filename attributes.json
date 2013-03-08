@@ -2,7 +2,7 @@
  "vagrant": {
   "host_name": "devmaster.localhost",
   "adapter": "eth0",
-  "recipe": "devudo::users",
+  "recipe": "devudo::aegir-devmaster",
   "source_path":  "/home/jon/Repos"
  },
  "aegir": {
