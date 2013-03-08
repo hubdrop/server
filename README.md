@@ -26,5 +26,21 @@ Getting Started
   
   "adapter": "en0: Wi-Fi (AirPort)",
 
-4. $ vagrant up
+4. UP! Create the VM:
+  $ vagrant up
+  
+5. Make changes to cookbooks/devudo.
+6. Reload the VM with the new cookbook
+  $ vagrant reload
+
+7. Destroy and rebuild to ensure the new cookbook changes works
+  $ vagrant destroy
+  $ vagrant up
+
+8. If you want to run an update on the working VM, which is faster than
+  vagrant reload or vagrant destroy and up.
+  
+  Login to the VM:
+  $ vagrant ssh
+  vagrant@hostname:~$ sudo chef-solo -j /vagrant/attributes.json
 
