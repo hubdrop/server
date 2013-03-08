@@ -15,10 +15,8 @@ Vagrant::Config.run do |config|
   # Load and apply a chef recipe
   config.vm.provision :chef_solo do |chef|
     # Add recipes and attributes:
-    chef.add_recipe local["vagrant"]["recipe"]
+    chef.add_recipe local["run_list"]
     chef.json = local
-    chef.json["mysql"]["server_debian_password"] = local["mysql"]["server_root_password"]
-    chef.json["mysql"]["server_repl_password"] = local["mysql"]["server_root_password"]
   end
   
   # Hook up your source code folder to the right places in the VM
