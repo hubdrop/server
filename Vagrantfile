@@ -8,7 +8,7 @@ Vagrant::Config.run do |config|
   local_config[:email] = "jon@thinkdrop.net"
   local_config[:hostname] = "devmaster.localhost"
   local_config[:adapter] = "wlan0" # wlan0 for wireless, eth0 for wired.
-  local_config[:recipe] = "devudo::aegir-devmaster-dev"
+  local_config[:recipe] = "devudo::aegir-devmaster"
   local_config[:host_repos_path] = "/home/jon/Repos"
   
   # DEVUDO CONFIG
