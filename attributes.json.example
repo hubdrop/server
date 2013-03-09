@@ -10,7 +10,7 @@
 "mysql": {
   "server_root_password": "ForChefSoloYouMustSaveYourRootPassword",
   "server_debian_password": "ForChefSoloYouMustSaveYourRootPassword",
-  "server_repl_password": "ForChefSoloYouMustSaveYourRootPassword",
+  "server_repl_password": "ForChefSoloYouMustSaveYourRootPassword"
  },
  "run_list": [
    "recipe[devudo::vagrant]",
