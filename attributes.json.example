@@ -2,7 +2,8 @@
  "vagrant": {
   "host_name": "devmaster.localhost",
   "adapter": "wlan0",
-  "source_path":  "/home/jon/Repos"
+  "source_path":  "/home/jon/Repos",
+  "cookbooks_path":  "/var/chef/cookbooks"
  },
  "aegir": {
   "client_email": "jon@thinkdrop.net"
