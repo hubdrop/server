@@ -14,6 +14,9 @@ Vagrant::Config.run do |config|
 
   # Load and apply a chef recipe
   config.vm.provision :chef_solo do |chef|
+    # allow user to specificy cookbooks path
+    chef.cookbooks_path = local["vagrant"]["cookbooks_path"]
+    
     # Add recipes and attributes:
     chef.add_recipe local["run_list"]
     chef.json = local
@@ -21,5 +24,4 @@ Vagrant::Config.run do |config|
   
   # Hook up your source code folder to the right places in the VM
   config.vm.share_folder "source", "/source",  local["vagrant"]["source_path"]
-
 end
