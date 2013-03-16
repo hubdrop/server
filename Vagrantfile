@@ -24,4 +24,5 @@ Vagrant::Config.run do |config|
   
   # Hook up your source code folder to the right places in the VM
   config.vm.share_folder "source", "/source",  local["vagrant"]["source_path"]
+  config.vm.share_folder "cookbooks", "/var/chef/cookbooks",  local["vagrant"]["cookbooks_path"]
 end
