@@ -11,8 +11,6 @@ Getting Started
 2. Clone this repo.  Init submodules to get cookbooks
 
     $ git clone git@github.com:devudo/vagrant.git
-    $ git submodule init
-    $ git submodule update
 
 3. Copy attributes.json.example to attributes.json, modify for your details
   Most important is "adapter".  This must match your local machine's
