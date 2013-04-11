@@ -2,6 +2,8 @@
  "vagrant": {
   "host_name": "devmaster.localhost",
   "adapter": "wlan0",
+  "hostonly_ip": "192.168.72.88",
+  "comment":"Choose a hostonly IP that does not conflict with your bridge network IP or any other subnet",
   "source_path":  "/home/jon/Repos",
   "cookbooks_path":  "/var/chef/cookbooks"
  },
