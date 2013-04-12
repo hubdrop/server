@@ -32,13 +32,13 @@ Getting Started
 
    $ ifconfig
 
-        ...snip...
-
-       vboxnet0: flags=8843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST> mtu 1500
-       inet 192.168.100.100 netmask 0xffffff00 broadcast 192.168.1.255
-       ether 0a:00:27:00:00:00
-
-       ...snip...
+>...snip...
+>
+>vboxnet0: flags=8843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+>inet 192.168.100.100 netmask 0xffffff00 broadcast 192.168.1.255
+>ether 0a:00:27:00:00:00
+>
+>...snip...
 
    Reveals that virtualbox is using the subnet 192.168.100.X
 
