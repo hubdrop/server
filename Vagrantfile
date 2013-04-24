@@ -20,7 +20,9 @@ Vagrant::Config.run do |config|
     chef.cookbooks_path = attributes["vagrant"]["cookbooks_path"]
 
     # Add recipes and attributes:
-    chef.add_recipe attributes["run_list"]
+    attributes["run_list"].each do |recipe|
+     chef.add_recipe recipe
+    end
     chef.json = attributes
   end
 
