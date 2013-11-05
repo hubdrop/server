@@ -75,7 +75,7 @@ end
 
 # Group can execute app.php
 file "/var/hubdrop/app/web/app.php" do
-  mode "0775"
+  mode "654"
   action :touch
 end
 execute "chmod 775 /var/hubdrop/app/app/cache"
