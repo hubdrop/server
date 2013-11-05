@@ -73,9 +73,13 @@ git "/var/hubdrop/app" do
   #notifies :run, "bash[compile_app_name]"
 end
 
-#vagrant@hubdrop:/var/hubdrop/app/app$ sudo chmod g+w cache/ -R
-#vagrant@hubdrop:/var/hubdrop/app/app$ sudo chmod g+w logs -R
-
+# Group can execute app.php
+file "/var/hubdrop/app/web/app.php" do
+  mode "0775"
+  action :touch
+end
+execute "chmod 775 /var/hubdrop/app/app/cache"
+execute "chmod 775 /var/hubdrop/app/app/logs"
 
 web_app "hubdrop" do
   server_name node['hostname']
