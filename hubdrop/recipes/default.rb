@@ -2,6 +2,7 @@
 # Include Recipes
 include_recipe "apt"
 include_recipe "apache2::mod_php5"
+include_recipe "php::module_curl"
 
 # Extra packages
 package "git"
@@ -80,6 +81,8 @@ file "/var/hubdrop/app/web/app.php" do
 end
 execute "chmod 775 /var/hubdrop/app/app/cache"
 execute "chmod 775 /var/hubdrop/app/app/logs"
+execute "chown hubdrop:hubdrop /var/hubdrop/app/app/cache"
+execute "chown hubdrop:hubdrop /var/hubdrop/app/app/logs"
 
 web_app "hubdrop" do
   server_name node['hostname']
