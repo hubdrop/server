@@ -1,7 +1,9 @@
 
-# Install git
+# Include Recipes
 include_recipe "apt"
+include_recipe "apache2::mod_php5"
 
+# Extra packages
 package "git"
 package "vim"
 
@@ -16,6 +18,12 @@ end
 group "www-data" do
   action :modify
   members "hubdrop"
+  append true
+end
+# Add www-data to hubdrop group
+group "hubdrop" do
+  action :modify
+  members "www-data"
   append true
 end
 directory "/var/hubdrop" do
@@ -43,22 +51,11 @@ end
 # Install Jenkins server
 # include_recipe "jenkins::server"
 
-# Install Apache server
-include_recipe "apache2"
-include_recipe "apache2::mod_rewrite"
-include_recipe "apache2::mod_php5"
-
 # Deploy hubdrop Symfony app
 # @TODO: Write hubdrop Symfony app
 
 # Deploy hubdrop server scripts
 # @TODO: Learn and use deploy LWRP
-web_app "hubdrop" do
-  server_name node['hostname']
-  server_aliases [node['vagrant']['hostname'], 'hubdrop.io']
-  #docroot "/var/hubdrop/app/web"
-  docroot "/var/www"
-end
 
 git "/var/hubdrop/app" do
   repository "https://github.com/hubdrop/web-app.git"
@@ -67,6 +64,17 @@ git "/var/hubdrop/app" do
   user "hubdrop"
   group "hubdrop"
   #notifies :run, "bash[compile_app_name]"
+end
+
+#vagrant@hubdrop:/var/hubdrop/app/app$ sudo chmod g+w cache/ -R
+#vagrant@hubdrop:/var/hubdrop/app/app$ sudo chmod g+w logs -R
+
+
+web_app "hubdrop" do
+  server_name node['hostname']
+  server_aliases [node['vagrant']['hostname'], 'hubdrop.io']
+  docroot "/var/hubdrop/app/web"
+  #docroot "/var/www"
 end
 
 # @TODO: Learn and use deploy LWRP
