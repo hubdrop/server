@@ -74,6 +74,7 @@ web_app "hubdrop" do
   server_name node['hostname']
   server_aliases [node['vagrant']['hostname'], 'hubdrop.io']
   docroot "/var/hubdrop/app/web"
+  allow_override "All"
   #docroot "/var/www"
 end
 
