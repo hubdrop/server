@@ -11,7 +11,7 @@ Vagrant::Config.run do |config|
   # Networking & hostname
   config.vm.network :bridged, :bridge => attributes["vagrant"]["adapter"]
   config.vm.network :hostonly, attributes["vagrant"]["hostonly_ip"]
-  config.vm.host_name = attributes["vagrant"]["host_name"]
+  config.vm.host_name = attributes["vagrant"]["hostname"]
 
 
   # Load and apply a chef recipe
