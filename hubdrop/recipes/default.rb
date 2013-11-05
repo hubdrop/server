@@ -33,6 +33,13 @@ directory "/var/hubdrop" do
   action :create
   recursive true
 end
+directory "/var/hubdrop/repos" do
+  owner "hubdrop"
+  group "hubdrop"
+  mode 00755
+  action :create
+  recursive true
+end
 directory "/var/hubdrop/.drush" do
   owner "hubdrop"
   group "hubdrop"
