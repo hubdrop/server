@@ -56,6 +56,36 @@ directory "/var/hubdrop/.ssh" do
   recursive true
 end
 
+
+# Setup its ssh keys
+path_to_key = "/var/hubdrop/.ssh/id_rsa"
+log "[HUBDROP] Generating ssh keys for hubdrop user"
+
+unless File.exists?(path_to_key)
+  execute "hubdrop-ssh-keys" do
+    user "hubdrop"
+    creates "#{path_to_key}.pub"
+    command "ssh-keygen -t rsa -q -f #{path_to_key} -P \"\""
+  end
+  log "[HUBDROP] Key generation complete"
+
+  # Add aegir's public key to our repos
+  log "[HUBDROP] Uploading key to github account for #{node[:github_deploys][:github_api][:username]}"
+  ruby_block "upload_key_to_github" do
+    block do
+      class Chef::Resource::RubyBlock
+        include GithubAPI
+      end
+      upload_key(
+        node[:github_deploys][:github_api][:email],
+        node[:github_deploys][:github_api][:password],
+        node[:fqdn],
+        "#{path_to_key}.pub")
+    end
+  end
+  log "[HUBDROP] Public Key uploaded to github:"
+end
+
 # Install Jenkins server
 # include_recipe "jenkins::server"
 
