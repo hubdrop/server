@@ -9,3 +9,4 @@ node.set['github_deploys']['github_api']['username'] = "devudo-deploy"
 node.set['github_deploys']['github_api']['email'] = "jon@devudo.com"
 node.set['github_deploys']['github_api']['password'] = "wakkawakka123"
 node.set['github_deploys']['github_api']['user_agent'] = "HubDrop/1.0"
+

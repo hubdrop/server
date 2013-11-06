@@ -1,8 +1,46 @@
 
 # Include Recipes
 include_recipe "apt"
+
+# Web Server
 include_recipe "apache2::mod_php5"
 include_recipe "php::module_curl"
+
+# Jenkins
+# @TODO: Jenkins installer doesn't setup /var/run/jenkins?
+directory "/var/run/jenkins" do
+  action :create
+end
+include_recipe "jenkins::server"
+
+# Jenkins Jobs
+git_branch = 'master'
+job_name = "hubdrop-jenkins-create-mirror"
+jenkins_home = node['jenkins']['server']['home'];
+job_config_path = File.join("#{jenkins_home}/jobs/#{job_name}/#{job_name}-config.xml")
+
+# Create Job Directory
+directory "#{jenkins_home}/jobs/#{job_name}" do
+  action :create
+  owner "jenkins"
+  group "jenkins"
+end
+
+# Job Chef Resource
+jenkins_job job_name do
+  action :nothing
+  config job_config_path
+end
+
+# Jenkins Job Template.
+template job_config_path do
+  source "hubdrop-jenkins-create-mirror-config.xml.erb"
+  owner "jenkins"
+  group "jenkins"
+  variables :job_name => job_name, :branch => git_branch, :node => node[:fqdn]
+  notifies :update, resources(:jenkins_job => job_name), :immediately
+  notifies :build, resources(:jenkins_job => job_name), :immediately
+end
 
 # Extra packages
 package "git"
@@ -19,6 +57,18 @@ end
 group "www-data" do
   action :modify
   members "hubdrop"
+  append true
+end
+# Add jenkins to www-data group
+group "www-data" do
+  action :modify
+  members "jenkins"
+  append true
+end
+# Add jenkins to www-data group
+group "hubdrop" do
+  action :modify
+  members "jenkins"
   append true
 end
 # Add www-data to hubdrop group
@@ -86,8 +136,6 @@ unless File.exists?(path_to_key)
   log "[HUBDROP] Public Key uploaded to github:"
 end
 
-# Install Jenkins server
-# include_recipe "jenkins::server"
 
 # Deploy hubdrop Symfony app
 # @TODO: Write hubdrop Symfony app
