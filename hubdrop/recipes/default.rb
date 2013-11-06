@@ -42,6 +42,18 @@ template job_config_path do
   notifies :build, resources(:jenkins_job => job_name), :immediately
 end
 
+# Jenkins special commands
+
+# grant jenkins user ability to run "sudo hubdrop-jenkins-create-mirror"
+cookbook_file "/etc/sudoers.d/jenkins" do
+  source "sudoers.d/jenkins"
+  action :create
+  backup false
+  owner "root"
+  group "root"
+  mode 00440
+end
+
 # Extra packages
 package "git"
 package "vim"
@@ -209,4 +221,14 @@ end
 
 link "/usr/local/bin/hubdrop-create-mirror" do
   to "/var/hubdrop/scripts/hubdrop-create-mirror.php"
+end
+
+# grant jenkins user ability to run "sudo hubdrop-jenkins-create-mirror"
+file "/usr/bin/hubdrop-jenkins-create-mirror" do
+  content '#!/bin/bash
+sudo su - hubdrop -c "hubdrop-create-mirror $1 $2"'
+  backup false
+  owner "root"
+  group "root"
+  mode 00755
 end
