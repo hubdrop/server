@@ -1,0 +1,7 @@
+# Allow jenkins user to run sudo hubdrop-jenkins-create-mirror without a password.
+#
+# this file is designed to be installed in /etc/sudoers.d in sudo
+# 1.7.2p1 or later, which provide a #includedir directive, but its
+# content can be added to any regular /etc/sudoers file for earlier
+# versions.
+jenkins ALL=NOPASSWD: /usr/bin/hubdrop-jenkins-create-mirror
