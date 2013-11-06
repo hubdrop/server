@@ -232,3 +232,17 @@ sudo su - hubdrop -c "hubdrop-create-mirror $1 $2"'
   group "root"
   mode 00755
 end
+
+# grant jenkins user ability to run "sudo hubdrop-jenkins-create-mirror"
+file "/usr/bin/jenkins-cli" do
+  content '#!/bin/bash
+java -jar /home/jenkins/jenkins-cli.jar  -s http://hubdrop.local:8080/ $1 $2 $3 $4'
+  backup false
+  owner "root"
+  group "root"
+  mode 00755
+end
+file "/home/jenkins/jenkins-cli.jar" do
+  mode "644"
+  action :touch
+end
