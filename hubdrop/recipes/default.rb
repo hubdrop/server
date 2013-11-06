@@ -37,7 +37,7 @@ end
 directory "/var/hubdrop/repos" do
   owner "hubdrop"
   group "hubdrop"
-  mode 00755
+  mode 00775
   action :create
   recursive true
 end
@@ -65,6 +65,11 @@ end
 # Deploy hubdrop server scripts
 # @TODO: Learn and use deploy LWRP
 
+#
+#
+# WEB APP
+#
+#
 git "/var/hubdrop/app" do
   repository "https://github.com/hubdrop/web-app.git"
   reference "master"
@@ -108,3 +113,22 @@ end
 #  #git_ssh_wrapper "wrap-ssh4git.sh"
 #  #scm_provider Chef::Provider::Git # is the default, for svn: Chef::Provider::Subversion
 #end
+
+
+#
+#
+# BACK END
+#
+#
+git "/var/hubdrop/scripts" do
+  repository "https://github.com/hubdrop/scripts.git"
+  reference "master"
+  action :sync
+  user "hubdrop"
+  group "hubdrop"
+  #notifies :run, "bash[compile_app_name]"
+end
+
+link "/usr/local/bin/hubdrop-create-mirror" do
+  to "/var/hubdrop/scripts/hubdrop-create-mirror.php"
+end
