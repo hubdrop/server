@@ -235,7 +235,7 @@ end
 # grant jenkins user ability to run "sudo hubdrop-jenkins-create-mirror"
 file "/usr/bin/jenkins-cli" do
   content '#!/bin/bash
-java -jar /home/jenkins/jenkins-cli.jar  -s http://hubdrop.local:8080/ $1 $2 $3 $4'
+java -jar /home/jenkins/jenkins-cli.jar  -s http://hubdrop.self:8080/ $1 $2 $3 $4'
   backup false
   owner "root"
   group "root"
