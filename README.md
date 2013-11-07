@@ -34,6 +34,7 @@ To deploy cookbooks to an actual server, you need to, as root user:
 1. Install chef-client (which includes chef-solo).
 2. Run chef-solo command.
 
+
     curl -L https://www.opscode.com/chef/install.sh | sudo bash
     chef-solo -j https://raw.github.com/hubdrop/scripts/master/attributes.json
 
