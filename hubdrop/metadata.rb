@@ -8,5 +8,5 @@ version          '1.0.0'
 
 recipe 'default', 'Installs a fully working hubdrop.io server.'
 
-depends 'jenkins::server'
+depends 'jenkins'
 
