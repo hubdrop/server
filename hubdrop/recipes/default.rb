@@ -180,6 +180,7 @@ execute "chown hubdrop:hubdrop /var/hubdrop/app/app/logs"
 
 web_app "hubdrop" do
   server_name node['hostname']
+  server_aliases []
   docroot "/var/hubdrop/app/web"
   allow_override "All"
   #docroot "/var/www"
