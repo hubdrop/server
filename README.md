@@ -25,3 +25,13 @@ To add other cookbooks, you can now use knife to install community cookbooks:
 
     $ knife cookbook site download php
     $ knife cookbook site install php
+
+Cookbook Deployment
+-------------------
+
+To deploy cookbooks to an actual server, you need to:
+
+1. Install chef-client (which includes chef-solo)
+2. Run chef-solo command.
+
+... exact steps coming soon.
