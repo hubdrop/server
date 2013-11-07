@@ -29,11 +29,8 @@ To add other cookbooks, you can now use knife to install community cookbooks:
 Cookbook Deployment
 -------------------
 
-To deploy cookbooks to an actual server, you need to, as root user:
-
-1. Install chef-client (which includes chef-solo).
-2. Run chef-solo command.
-
+To deploy cookbooks to an actual server, all you need to do is install chef and run the chef-solo command.  
+The attributes for the server will be loaded directly from GitHub.
 
     curl -L https://www.opscode.com/chef/install.sh | sudo bash
     chef-solo -j https://raw.github.com/hubdrop/scripts/master/attributes.json
