@@ -15,32 +15,38 @@ include_recipe "jenkins::server"
 
 # Jenkins Jobs
 git_branch = 'master'
-job_name = "hubdrop-jenkins-create-mirror"
+jobs = ["hubdrop-jenkins-create-mirror", "hubdrop-jenkins-update-mirrors"]
 jenkins_home = node['jenkins']['server']['home'];
-job_config_path = File.join("#{jenkins_home}/jobs/#{job_name}/#{job_name}-config.xml")
 
-# Create Job Directory
-directory "#{jenkins_home}/jobs/#{job_name}" do
-  action :create
-  owner "jenkins"
-  group "jenkins"
-end
 
-# Job Chef Resource
-jenkins_job job_name do
-  action :nothing
-  config job_config_path
-end
+# Create all jobs
+jobs.each{|job_name|
 
-# Jenkins Job Template.
-template job_config_path do
-  source "hubdrop-jenkins-create-mirror-config.xml.erb"
-  owner "jenkins"
-  group "jenkins"
-  variables :job_name => job_name, :branch => git_branch, :node => node[:fqdn]
-  notifies :update, resources(:jenkins_job => job_name), :immediately
-  notifies :build, resources(:jenkins_job => job_name), :immediately
-end
+  job_config_path = File.join("#{jenkins_home}/jobs/#{job_name}/#{job_name}-config.xml")
+
+  # Create Job Directory
+  directory "#{jenkins_home}/jobs/#{job_name}" do
+    action :create
+    owner "jenkins"
+    group "jenkins"
+  end
+
+  # Job Chef Resource
+  jenkins_job job_name do
+    action :nothing
+    config job_config_path
+  end
+
+  # Jenkins Job Template.
+  template job_config_path do
+    source "hubdrop-jenkins-create-mirror-config.xml.erb"
+    owner "jenkins"
+    group "jenkins"
+    variables :job_name => job_name, :branch => git_branch, :node => node[:fqdn]
+    notifies :update, resources(:jenkins_job => job_name), :immediately
+    notifies :build, resources(:jenkins_job => job_name), :immediately
+  end
+}
 
 # Jenkins special commands
 
@@ -239,7 +245,7 @@ sudo su - hubdrop -c "hubdrop-create-mirror $1 $2"'
   mode 00755
 end
 # grant jenkins user ability to run "sudo hubdrop-jenkins-update-mirrors"
-file "/usr/bin/hubdrop-jenkins-update-mirror" do
+file "/usr/bin/hubdrop-jenkins-update-mirrors" do
   content '#!/bin/bash
 sudo su - hubdrop -c "hubdrop-update-mirrors $1 $2"'
   backup false

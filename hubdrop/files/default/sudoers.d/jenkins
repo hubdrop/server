@@ -5,3 +5,4 @@
 # content can be added to any regular /etc/sudoers file for earlier
 # versions.
 jenkins ALL=NOPASSWD: /usr/bin/hubdrop-jenkins-create-mirror
+jenkins ALL=NOPASSWD: /usr/bin/hubdrop-jenkins-update-mirrors
