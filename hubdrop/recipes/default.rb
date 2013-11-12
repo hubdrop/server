@@ -21,7 +21,7 @@ jenkins_home = node['jenkins']['server']['home'];
 # Create all jobs
 jobs.each{|job_name|
 
-  job_config_path = File.join("#{jenkins_home}/jobs/#{job_name}/config.xml")
+  job_config_path = File.join("#{jenkins_home}/jobs/#{job_name}/#{job_name}-config.xml")
 
   # Create Job Directory
   directory "#{jenkins_home}/jobs/#{job_name}" do
@@ -38,7 +38,7 @@ jobs.each{|job_name|
 
   # Jenkins Job Template.
   template job_config_path do
-    source "hubdrop-jenkins-create-mirror-config.xml.erb"
+    source "#{job_name}-config.xml.erb"
     owner "jenkins"
     group "jenkins"
     variables :job_name => job_name, :branch => git_branch, :node => node[:fqdn]
