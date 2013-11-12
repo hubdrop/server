@@ -219,8 +219,14 @@ git "/var/hubdrop/scripts" do
   #notifies :run, "bash[compile_app_name]"
 end
 
+# HubDrop Create Mirror
 link "/usr/local/bin/hubdrop-create-mirror" do
   to "/var/hubdrop/scripts/hubdrop-create-mirror.php"
+end
+
+# HubDrop update mirrors
+link "/usr/local/bin/hubdrop-update-mirrors" do
+  to "/var/hubdrop/scripts/hubdrop-update-mirrors.php"
 end
 
 # grant jenkins user ability to run "sudo hubdrop-jenkins-create-mirror"
@@ -232,8 +238,17 @@ sudo su - hubdrop -c "hubdrop-create-mirror $1 $2"'
   group "root"
   mode 00755
 end
+# grant jenkins user ability to run "sudo hubdrop-jenkins-update-mirrors"
+file "/usr/bin/hubdrop-jenkins-update-mirror" do
+  content '#!/bin/bash
+sudo su - hubdrop -c "hubdrop-update-mirrors $1 $2"'
+  backup false
+  owner "root"
+  group "root"
+  mode 00755
+end
 
-# grant jenkins user ability to run "sudo hubdrop-jenkins-create-mirror"
+# Command for jenkins-cli
 file "/usr/bin/jenkins-cli" do
   content '#!/bin/bash
 java -jar /home/jenkins/jenkins-cli.jar  -s http://hubdrop.local:8080/ $1 $2 $3 $4'
