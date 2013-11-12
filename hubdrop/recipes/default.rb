@@ -1,4 +1,3 @@
-
 # Include Recipes
 include_recipe "apt"
 
@@ -187,7 +186,7 @@ execute "chown hubdrop:hubdrop /var/hubdrop/app/app/logs"
 
 web_app "hubdrop" do
   server_name node['hostname']
-  server_aliases [node['vagrant']['hostname'], 'hubdrop.io']
+  server_aliases []
   docroot "/var/hubdrop/app/web"
   allow_override "All"
   #docroot "/var/www"
@@ -257,7 +256,7 @@ end
 # Command for jenkins-cli
 file "/usr/bin/jenkins-cli" do
   content '#!/bin/bash
-java -jar /home/jenkins/jenkins-cli.jar  -s http://hubdrop.local:8080/ $1 $2 $3 $4'
+java -jar /home/jenkins/jenkins-cli.jar  -s http://localhost:8080/ $1 $2 $3 $4'
   backup false
   owner "root"
   group "root"
