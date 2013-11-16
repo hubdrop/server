@@ -258,6 +258,16 @@ sudo su - hubdrop -c "hubdrop-update-mirrors $1 $2"'
   mode 00755
 end
 
+# Single Command chef-solo run.
+file "/usr/bin/hubdrop-deploy" do
+  content '#!/bin/bash
+sudo chef-solo -j https://raw.github.com/hubdrop/scripts/master/attributes.json -r https://github.com/hubdrop/cookbooks/raw/master/chef-solo.tar.gz'
+  backup false
+  owner "root"
+  group "root"
+  mode 00755
+end
+
 # Command for jenkins-cli
 file "/usr/bin/jenkins-cli" do
   content '#!/bin/bash
