@@ -6,3 +6,4 @@
 # versions.
 jenkins ALL=NOPASSWD: /usr/bin/hubdrop-jenkins-create-mirror
 jenkins ALL=NOPASSWD: /usr/bin/hubdrop-jenkins-update-mirrors
+jenkins ALL=NOPASSWD: /usr/bin/hubdrop-deploy
