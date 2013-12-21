@@ -11,11 +11,6 @@
           <description>Drupal.org project name.</description>
           <defaultValue></defaultValue>
         </hudson.model.StringParameterDefinition>
-        <hudson.model.StringParameterDefinition>
-          <name>PATH</name>
-          <description>Path to clone to.</description>
-          <defaultValue>/var/hubdrop/repos</defaultValue>
-        </hudson.model.StringParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
   </properties>
@@ -28,7 +23,7 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>/usr/bin/sudo /usr/bin/hubdrop-jenkins-create-mirror $NAME $PATH</command>
+      <command>/usr/bin/sudo /var/hubdrop/app/app/console hubdrop:mirror $NAME</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers/>
