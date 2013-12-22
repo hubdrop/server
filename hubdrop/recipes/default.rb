@@ -215,34 +215,11 @@ end
 # BACK END
 #
 #
-git "/var/hubdrop/scripts" do
-  repository "https://github.com/hubdrop/scripts.git"
-  reference "master"
-  action :sync
-  user "hubdrop"
-  group "hubdrop"
-  #notifies :run, "bash[compile_app_name]"
-end
-
-# HubDrop Create Mirror
-link "/usr/local/bin/hubdrop-create-mirror" do
-  to "/var/hubdrop/scripts/hubdrop-create-mirror.php"
-end
-
-# HubDrop update mirrors
-link "/usr/local/bin/hubdrop-update-mirrors" do
-  to "/var/hubdrop/scripts/hubdrop-update-mirrors.php"
-end
-
-# HubDrop update mirrors
-link "/usr/local/bin/hubdrop-set-source" do
-  to "/var/hubdrop/scripts/hubdrop-set-source.php"
-end
 
 # grant jenkins user ability to run "sudo hubdrop-jenkins-create-mirror"
 file "/usr/bin/hubdrop-jenkins-create-mirror" do
   content '#!/bin/bash
-sudo su - hubdrop -c "hubdrop-create-mirror $1 $2"'
+sudo su - hubdrop -c "/var/hubdrop/app/app/console hubdrop:mirror $1"'
   backup false
   owner "root"
   group "root"
@@ -251,7 +228,7 @@ end
 # grant jenkins user ability to run "sudo hubdrop-jenkins-update-mirrors"
 file "/usr/bin/hubdrop-jenkins-update-mirrors" do
   content '#!/bin/bash
-sudo su - hubdrop -c "hubdrop-update-mirrors $1 $2"'
+sudo su - hubdrop -c "/var/hubdrop/app/app/console hubdrop:update"'
   backup false
   owner "root"
   group "root"
