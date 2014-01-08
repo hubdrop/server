@@ -4,5 +4,6 @@
     "hostname": "hubdrop.local",
     "adapter": "wlan0",
     "hostonly_ip": "1.1.1.1"
-  }
+  },
+  "run_list": [ "recipe[hubdrop]" ]
 }
