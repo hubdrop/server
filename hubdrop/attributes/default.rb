@@ -1,4 +1,9 @@
 
+# General settings
+default['hubdrop']['paths']['home']  = '/var/hubdrop'
+default['hubdrop']['paths']['app']  = '/var/hubdrop/app'
+default['hubdrop']['paths']['repos']  = '/var/hubdrop/repos'
+
 # Generate and deploy aegir ssh key to github
 node.set['github_deploys']['deploy_user'] = "hubdrop"
 node.set['github_deploys']['deploy_group'] = "hubdrop"
