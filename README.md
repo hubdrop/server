@@ -1,6 +1,8 @@
 HubDrop CookBook
 ================
 
+HubDrop is more than the app, it is also the server configuration.  To create a hubdrop server, the `hubdrop::default` recipe is run
+
 
 Cookbook Development
 --------------------
