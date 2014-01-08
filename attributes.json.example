@@ -3,7 +3,7 @@
   "vagrant": {
     "hostname": "hubdrop.local",
     "adapter": "wlan0",
-    "hostonly_ip": "1.1.1.1"
+    "hostonly_ip": "10.10.10.10"
   },
   "run_list": [ "recipe[hubdrop]" ]
 }
