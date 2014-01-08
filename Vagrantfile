@@ -27,6 +27,6 @@ Vagrant::Config.run do |config|
   end
 
   # Hook up your source code folder to the right places in the VM
-  config.vm.share_folder "app", "/app",  "web-app"
+  config.vm.share_folder "app", "/app",  "app"
   config.vm.share_folder "cookbooks", "/var/chef/cookbooks", "cookbooks"
 end
