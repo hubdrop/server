@@ -223,6 +223,15 @@ file "/usr/bin/hubdrop" do
    mode 00755
  end
 
+file "/usr/bin/console" do
+   content "#!/bin/bash
+ #{node['hubdrop']['paths']['app']}/app/console $1 $2 $3 $4"
+   backup false
+   owner "root"
+   group "root"
+   mode 00755
+ end
+
 # grant jenkins user ability to run "sudo hubdrop-jenkins-create-mirror"
 file "/usr/bin/hubdrop-jenkins-create-mirror" do
   content "#!/bin/bash
