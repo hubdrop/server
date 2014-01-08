@@ -164,13 +164,13 @@ end
 # WEB APP
 #
 #
-server_aliases = []
+server_aliases = Array.new
 
 # If in vagrant, /app maps to local folder
 if File.exists?('/app')
   app_docroot = "/app/web"
   node.set['hubdrop']['paths']['app'] = '/app'
-  server_aliases[] = node['vagrant']['hostname']
+  server_aliases.push node['vagrant']['hostname']
 
   # Add www-data to vagrant group
   group "vagrant" do
