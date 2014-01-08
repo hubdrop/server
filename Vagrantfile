@@ -13,20 +13,20 @@ Vagrant::Config.run do |config|
   config.vm.network :hostonly, attributes["vagrant"]["hostonly_ip"]
   config.vm.host_name = attributes["vagrant"]["hostname"]
 
-
-  # Load and apply a chef recipe
+  # Set Chef as our provisioner
   config.vm.provision :chef_solo do |chef|
-    # allow user to specificy cookbooks path
-    chef.cookbooks_path = "cookbooks" #attributes["vagrant"]["cookbooks_path"]
 
-    # Add recipes and attributes:
-    attributes["run_list"].each do |recipe|
-     chef.add_recipe recipe
-    end
+    # Cookbooks folder is expected to be in the same folder as this file.
+    chef.cookbooks_path = "cookbooks"
+
+    # Add "hubdrop" recipe.
+    chef.add_recipe "recipe[hubdrop"
+
+    # Pass attributes from json to Chef.
     chef.json = attributes
   end
 
-  # Hook up your source code folder to the right places in the VM
+  # Make local source code available to the VM
   config.vm.share_folder "app", "/app",  "app"
   config.vm.share_folder "cookbooks", "/var/chef/cookbooks", "cookbooks"
 end

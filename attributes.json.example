@@ -1,12 +1,8 @@
 {
   "hostname": "hubdrop.io",
- "vagrant": {
-  "hostname": "hubdrop.local",
-  "adapter": "wlan0",
-  "hostonly_ip": "1.1.1.1",
-  "cookbooks_path":  "/home/jon/Repos/hubdrop/cookbooks"
- },
- "run_list": [
-   "recipe[hubdrop]"
- ]
+  "vagrant": {
+    "hostname": "hubdrop.local",
+    "adapter": "wlan0",
+    "hostonly_ip": "1.1.1.1"
+  }
 }
