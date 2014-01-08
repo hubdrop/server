@@ -66,7 +66,7 @@ package "vim"
 # Create the hubdrop user
 user "hubdrop" do
   comment "HubDrop"
-  home "/var/hubdrop"
+  home node['hubdrop']['paths']['home']
   shell "/bin/bash"
   system true
 end
@@ -94,28 +94,28 @@ group "hubdrop" do
   members "www-data"
   append true
 end
-directory "/var/hubdrop" do
+directory node['hubdrop']['paths']['home'] do
   owner "hubdrop"
   group "hubdrop"
   mode 00755
   action :create
   recursive true
 end
-directory "/var/hubdrop/repos" do
+directory node['hubdrop']['paths']['repos'] do
   owner "hubdrop"
   group "hubdrop"
   mode 00775
   action :create
   recursive true
 end
-directory "/var/hubdrop/.drush" do
+directory "#{node['hubdrop']['paths']['home']}/.drush" do
   owner "hubdrop"
   group "hubdrop"
   mode 00755
   action :create
   recursive true
 end
-directory "/var/hubdrop/.ssh" do
+directory "#{node['hubdrop']['paths']['home']}/.ssh" do
   owner "hubdrop"
   group "hubdrop"
   mode 00755
@@ -125,7 +125,7 @@ end
 
 
 # Setup its ssh keys
-path_to_key = "/var/hubdrop/.ssh/id_rsa"
+path_to_key = "#{node['hubdrop']['paths']['home']}/.ssh/id_rsa"
 log "[HUBDROP] Generating ssh keys for hubdrop user"
 
 unless File.exists?(path_to_key)
@@ -164,50 +164,50 @@ end
 # WEB APP
 #
 #
-git "/var/hubdrop/app" do
-  repository "https://github.com/hubdrop/app.git"
-  reference "master"
-  action :sync
-  user "hubdrop"
-  group "hubdrop"
-  #notifies :run, "bash[compile_app_name]"
+server_aliases = []
+
+# If in vagrant, /app maps to local folder
+if File.exists?('/app')
+  app_docroot = "/app/web"
+  node.set['hubdrop']['paths']['app'] = '/app'
+  server_aliases[] = node['vagrant']['hostname']
+
+  # Add www-data to vagrant group
+  group "vagrant" do
+    action :modify
+    members "www-data"
+    append true
+  end
+else
+  app_docroot = "#{node['hubdrop']['paths']['app']}/web"
+  git "#{node['hubdrop']['paths']['app']}" do
+    repository "https://github.com/hubdrop/app.git"
+    reference "master"
+    action :sync
+    user "hubdrop"
+    group "hubdrop"
+    #@TODO: notifies :run, "bash[clear_cache]"
+  end
 end
 
 # Group can execute app.php
-file "/var/hubdrop/app/web/app.php" do
+file "#{node['hubdrop']['paths']['app']}/web/app.php" do
   mode "654"
   action :touch
 end
-execute "chmod 775 /var/hubdrop/app/app/cache"
-execute "chmod 775 /var/hubdrop/app/app/logs"
-execute "chown hubdrop:hubdrop /var/hubdrop/app/app/cache"
-execute "chown hubdrop:hubdrop /var/hubdrop/app/app/logs"
+execute "chmod 775 #{node['hubdrop']['paths']['app']}/app/cache"
+execute "chmod 775 #{node['hubdrop']['paths']['app']}/app/logs"
+execute "chown hubdrop:hubdrop #{node['hubdrop']['paths']['app']}/app/cache"
+execute "chown hubdrop:hubdrop #{node['hubdrop']['paths']['app']}/app/logs"
 
-web_app "hubdrop" do
-  server_name node['hostname']
-  server_aliases []
-  docroot "/var/hubdrop/app/web"
-  allow_override "All"
-  #docroot "/var/www"
-end
-
+# Sets up apache site
 # @TODO: Learn and use deploy LWRP
-#deploy "/var/web-app" do
-#  repo "git@github.com:hubdrop/web-app.git"
-#  revision "HEAD" # or "HEAD" or "TAG_for_1.0" or (subversion) "1234"
-#  #user "deploy_ninja"
-#  #enable_submodules true
-#  #migrate true
-#  #migration_command "rake db:migrate"
-#  #environment "RAILS_ENV" => "production", "OTHER_ENV" => "foo"
-#  shallow_clone true
-#  #keep_releases 10
-#  action :deploy # or :rollback
-#  #restart_command "touch tmp/restart.txt"
-#  #git_ssh_wrapper "wrap-ssh4git.sh"
-#  #scm_provider Chef::Provider::Git # is the default, for svn: Chef::Provider::Subversion
-#end
-
+web_app node['hostname'] do
+  server_name node['hostname']
+  server_aliases server_aliases
+  docroot app_docroot
+  allow_override "All"
+end
 
 #
 #
@@ -215,8 +215,8 @@ end
 #
 #
 file "/usr/bin/hubdrop" do
-   content '#!/bin/bash
- /var/hubdrop/app/app/console hubdrop:$1 $2 $3 $4'
+   content "#!/bin/bash
+ #{node['hubdrop']['paths']['app']}/app/console hubdrop:$1 $2 $3 $4"
    backup false
    owner "root"
    group "root"
@@ -225,8 +225,8 @@ file "/usr/bin/hubdrop" do
 
 # grant jenkins user ability to run "sudo hubdrop-jenkins-create-mirror"
 file "/usr/bin/hubdrop-jenkins-create-mirror" do
-  content '#!/bin/bash
-sudo su - hubdrop -c "/var/hubdrop/app/app/console hubdrop:mirror $1"'
+  content "#!/bin/bash
+sudo su - hubdrop -c \"#{node['hubdrop']['paths']['app']}/app/console hubdrop:mirror $1\""
   backup false
   owner "root"
   group "root"
@@ -234,8 +234,8 @@ sudo su - hubdrop -c "/var/hubdrop/app/app/console hubdrop:mirror $1"'
 end
 # grant jenkins user ability to run "sudo hubdrop-jenkins-update-mirrors"
 file "/usr/bin/hubdrop-jenkins-update-mirrors" do
-  content '#!/bin/bash
-sudo su - hubdrop -c "/var/hubdrop/app/app/console hubdrop:update:all"'
+  content "#!/bin/bash
+sudo su - hubdrop -c \"#{node['hubdrop']['paths']['app']}/app/console hubdrop:update:all\""
   backup false
   owner "root"
   group "root"
@@ -244,8 +244,8 @@ end
 
 # Single Command chef-solo run.
 file "/usr/bin/hubdrop-deploy" do
-  content '#!/bin/bash
-sudo chef-solo -j https://raw.github.com/hubdrop/scripts/master/attributes.json -r https://github.com/hubdrop/cookbooks/raw/master/chef-solo.tar.gz'
+  content "#!/bin/bash
+sudo chef-solo -j https://raw.github.com/hubdrop/cookbooks/master/attributes.json -r https://github.com/hubdrop/cookbooks/raw/master/chef-solo.tar.gz"
   backup false
   owner "root"
   group "root"
