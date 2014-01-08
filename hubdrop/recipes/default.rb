@@ -155,7 +155,6 @@ end
 
 
 # Deploy hubdrop Symfony app
-# @TODO: Write hubdrop Symfony app
 
 # Deploy hubdrop server scripts
 # @TODO: Learn and use deploy LWRP
@@ -166,7 +165,7 @@ end
 #
 #
 git "/var/hubdrop/app" do
-  repository "https://github.com/hubdrop/web-app.git"
+  repository "https://github.com/hubdrop/app.git"
   reference "master"
   action :sync
   user "hubdrop"
