@@ -1,21 +1,29 @@
-DEVUDO VAGRANT
-==============
+HubDrop Vagrant
+===============
 
-This code will help you fire up a devudo devmaster or shopmaster on your local computer.
+This code will help you fire up a hubdrop server with vagrant.
+
+Setup
+-----
+Follow the instructions at https://github.com/hubdrop/development to get HubDrop Vagrant up and running.
+
+After cloning this repo, run `init.sh`.
+
+Additional Repos
+----------------
+`init.sh` clones the repos for `hubdrop/app` and `hubdrop/cookbooks` to this folder.  These folders are added as vagrant shared folders. 
+
+Edit the source code in these folders to develop hubdrop.  The files are available inside the VM.
 
 
-Getting Started
----------------
+Configuring your Network Adapter
+--------------------------------
 
-1. Install Vagrant
-2. Clone this repo.  Init submodules to get cookbooks
+The attributes.json is used to determine the network adapter your virtual machine uses to connect to the internet.
 
-    $ git clone git@github.com:devudo/vagrant.git
+If your adapter is not `eth0` you must edit attributes.json.
 
-3. Copy attributes.json.example to attributes.json, modify for your details
-  Most important is "adapter".  This must match your local machine's
-  active internet connection.  To find out the exact name of your adapter,
-  use the command:
+You can call the following command to determine your adapter's name.
 
     $ VBoxManage list bridgedifs | grep ^Name
     Name:            en0: Wi-Fi (AirPort)
@@ -25,50 +33,10 @@ Getting Started
 
   "adapter": "en0: Wi-Fi (AirPort)",
 
-4. Enter an IP address for "hostonly_ip". Choose a private IP from a subnet that does not
-   conflict with existing subnets or with the IP assisgned to the adapter in step 3. This
-   IP is also the value you will use in /etc/hosts to set the hostname. You can use any private
-   IP, but "ifconfig" will reveal the subnets virtualbox is already using (an existing virtual machine must be running).
+Configuring your IP
+-------------------
 
-   $ ifconfig
-
->...snip...
->
->vboxnet0: flags=8843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST> mtu 1500
->inet 192.168.100.100 netmask 0xffffff00 broadcast 192.168.1.255
->ether 0a:00:27:00:00:00
->
->...snip...
-
-   Reveals that virtualbox is using the subnet 192.168.100.X
-
-   If no host-only networks are defined yet, you can set up host-only
-   networks using Virtualbox's configuration UI, under "preferences/network" on the menubar.
-   (The virtualbox manager window must be the foremost window during this configuration,
-   not a guest machine wndow).
-
-   Choose a free IP from the host-only subnet:
-
-   In attributes.json:
-   "hostonly_ip": "192.168.100.101",
-
-   In /etc/hosts:
-   192.168.100.101  devmaster.localhost
-
-
-5. UP! Create the VM:
-
-    $ vagrant up
-
-6. Make changes to cookbooks/devudo.
-7. Reload the VM with the new cookbook
-
-    $ vagrant reload
-
-8. Destroy and rebuild to ensure the new cookbook changes works
-
-    $ vagrant destroy
-    $ vagrant up
+If, for some reason, another device on your network uses the IP 10.10.10.10, you can change it in attributes.json.
 
 9. If you want to run an update on the working VM, which is faster than
   vagrant reload or vagrant destroy and up.
