@@ -1,3 +1,10 @@
 
 # Ignore changes to our local attributes file
 attributes.json
+
+# Ignore .vagrant config folder
+.vagrant
+
+# ignore clones of source code.
+cookbooks
+app
