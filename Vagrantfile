@@ -20,13 +20,13 @@ Vagrant::Config.run do |config|
     chef.cookbooks_path = "cookbooks"
 
     # Add "hubdrop" recipe.
-    chef.add_recipe "recipe[hubdrop"
+    chef.add_recipe "hubdrop"
 
     # Pass attributes from json to Chef.
     chef.json = attributes
   end
 
   # Make local source code available to the VM
-  config.vm.share_folder "app", "/app",  "app"
+  config.vm.share_folder "app", "/app",  "app", :owner => "www-data", :group => "www-data"
   config.vm.share_folder "cookbooks", "/var/chef/cookbooks", "cookbooks"
 end
