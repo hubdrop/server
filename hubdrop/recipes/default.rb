@@ -274,3 +274,14 @@ file "/home/jenkins/jenkins-cli.jar" do
   mode "644"
   action :touch
 end
+
+# HubDrop Attributes
+file "/etc/github_authorization_key" do
+  content node['hubdrop']['github']['authorization_key']
+end
+file "/etc/github_organization" do
+  content node['hubdrop']['github']['organization']
+end
+file "/etc/drupal_username" do
+  content node['hubdrop']['drupal']['username']
+end
