@@ -6,9 +6,11 @@
     "hostonly_ip": "10.10.10.10"
   },
   "hubdrop": {
+    "url": "http://hubdrop.local",
     "github": {
-      "authorization_key": "1a82e7c9cc3b1631c6902ea8a766641460b92736",
-      "organization": "drupalprojects"
+      "authorization_key": "",
+      "organization": "drupalprojects",
+      "username": "hubdrop-user"
     },
     "drupal": {
       "username": "hubdrop"
