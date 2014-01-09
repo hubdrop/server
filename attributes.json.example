@@ -5,5 +5,14 @@
     "adapter": "wlan0",
     "hostonly_ip": "10.10.10.10"
   },
+  "hubdrop": {
+    "github": {
+      "authorization_key": "1a82e7c9cc3b1631c6902ea8a766641460b92736",
+      "organization": "drupalprojects"
+    },
+    "drupal": {
+      "username": "hubdrop"
+    }
+  },
   "run_list": [ "recipe[hubdrop]" ]
 }
