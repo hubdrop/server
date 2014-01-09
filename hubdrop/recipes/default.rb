@@ -1,3 +1,16 @@
+# Symfony Environment
+if node['hostname'] == 'hubdrop.io'
+  node.set['environment'] = 'prod'
+  magic_shell_environment 'SYMFONY_ENV' do
+    value 'prod'
+  end
+else
+  node.set['environment'] = 'dev'
+  magic_shell_environment 'SYMFONY_ENV' do
+    value 'dev'
+  end
+end
+
 # Include Recipes
 include_recipe "apt"
 
@@ -275,13 +288,16 @@ file "/home/jenkins/jenkins-cli.jar" do
   action :touch
 end
 
-# HubDrop Attributes
-file "/etc/github_authorization_key" do
-  content node['hubdrop']['github']['authorization_key']
+# HubDrop Attributes to Environment Variables
+magic_shell_environment 'SYMFONY__HUBDROP__GITHUB_USERNAME' do
+  value node['hubdrop']['github']['username']
 end
-file "/etc/github_organization" do
-  content node['hubdrop']['github']['organization']
+magic_shell_environment 'SYMFONY__HUBDROP__GITHUB_ORGANIZATION' do
+  value node['hubdrop']['github']['organization']
 end
-file "/etc/drupal_username" do
-  content node['hubdrop']['drupal']['username']
+magic_shell_environment 'SYMFONY__HUBDROP__GITHUB_AUTHORIZATION_KEY' do
+  value node['hubdrop']['github']['authorization_key']
+end
+magic_shell_environment 'SYMFONY__HUBDROP__DRUPAL_USERNAME' do
+  value node['hubdrop']['drupal']['username']
 end
