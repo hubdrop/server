@@ -4,6 +4,11 @@
   DocumentRoot <%= @params[:docroot] %>
   RewriteEngine On
 
+  # HUBDROP
+  SetEnv SYMFONY__HUBDROP__GITHUB_ORGANIZATION <%= node['hubdrop']['github']['organization'] %>
+  SetEnv SYMFONY__HUBDROP__GITHUB_AUTHORIZATION <%= node['hubdrop']['github']['authorization_key'] %>
+  SetEnv SYMFONY__HUBDROP__DRUPAL_USERNAME <%= node['hubdrop']['drupal']['username'] %>
+
   <Directory <%= @params[:docroot] %>>
     Options <%= [@params[:directory_options] || "FollowSymLinks" ].flatten.join " " %>
     AllowOverride <%= [@params[:allow_override] || "None" ].flatten.join " " %>
