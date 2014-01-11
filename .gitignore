@@ -6,5 +6,5 @@ attributes.json
 .vagrant
 
 # ignore clones of source code.
-cookbooks
-app
+#cookbooks
+#app
