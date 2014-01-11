@@ -1,6 +1,0 @@
-[submodule "app"]
-	path = app
-	url = git@github.com:hubdrop/app.git
-[submodule "cookbooks"]
-	path = cookbooks
-	url = git@github.com:hubdrop/cookbooks.git
