@@ -47,3 +47,4 @@ Reloading Chef Recipes
     $ vagrant ssh
     vagrant@hostname:~$ sudo chef-solo -j /vagrant/attributes.json
 
+
