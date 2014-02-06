@@ -8,7 +8,7 @@
   "hubdrop": {
     "url": "http://hubdrop.local",
     "github": {
-      "authorization_key": "",
+      "authorization": "",
       "organization": "drupalprojects",
       "username": "hubdrop-user"
     },
