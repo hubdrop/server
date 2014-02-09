@@ -1,6 +1,13 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 Vagrant::Config.run do |config|
+  
+  # Attributes are loaded from attributes.json
+  if !(File.exists?("attributes.json"))
+    warn "Copy attributes.json.example attributes.json and try again."
+    exit
+  end
+
   # Get attributes from attributes.json
   attributes = JSON.parse(IO.read("attributes.json"))
 
