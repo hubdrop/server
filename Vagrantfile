@@ -1,7 +1,8 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
-Vagrant::Config.run do |config|
-  
+VAGRANTFILE_API_VERSION = "2"
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
   # Attributes are loaded from attributes.json
   if !(File.exists?("attributes.json"))
     warn "Copy attributes.json.example attributes.json and try again."
@@ -12,13 +13,14 @@ Vagrant::Config.run do |config|
   attributes = JSON.parse(IO.read("attributes.json"))
 
   # Base Box
-  config.vm.box = "precise32"
-  config.vm.box_url = "http://files.vagrantup.com/precise32.box"
+  config.vm.box = "hashicorp/precise64"
 
   # Networking & hostname
-  config.vm.network :bridged, :bridge => attributes["vagrant"]["adapter"]
-  config.vm.network :hostonly, attributes["vagrant"]["hostonly_ip"]
-  config.vm.host_name = attributes["vagrant"]["hostname"]
+  config.vm.network :private_network, ip: attributes["vagrant"]["hostonly_ip"]
+  config.vm.network :public_network, bridge: attributes["vagrant"]["adapter"]
+
+  config.vm.hostname = attributes["vagrant"]["hostname"]
+
 
   # Set Chef as our provisioner
   config.vm.provision :chef_solo do |chef|
@@ -33,7 +35,15 @@ Vagrant::Config.run do |config|
     chef.json = attributes
   end
 
+  # Clone the needed repos
+  if !File.directory?("app")
+    system('git clone git@github.com:hubdrop/app.git')
+    system('git clone git@github.com:hubdrop/cookbooks.git')
+  end
+
   # Make local source code available to the VM
-  config.vm.share_folder "app", "/app",  "app", :owner => "www-data", :group => "www-data"
-  config.vm.share_folder "cookbooks", "/var/chef/cookbooks", "cookbooks"
+  config.vm.synced_folder "app", "/app",
+    owner: 'www-data', group: 'www-data'
+
+  config.vm.synced_folder "cookbooks", "/var/chef/cookbooks"
 end
