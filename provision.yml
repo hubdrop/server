@@ -72,4 +72,7 @@
     - name: Apache | Enable our new site
       action: command a2ensite {{ server_hostname }}
 
+    - name: Apache | reload
+      action: command service apache2 reload
+
 
