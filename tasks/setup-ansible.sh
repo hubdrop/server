@@ -4,5 +4,5 @@ if [ ! `which ansible` ]; then
     apt-get install python-software-properties -y
     add-apt-repository ppa:rquillo/ansible -y
     apt-get update
-    apt-get install ansible=1.5.4 -y
+    apt-get install ansible -y
 fi
