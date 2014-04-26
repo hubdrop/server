@@ -1,50 +1,30 @@
 HubDrop Vagrant
 ===============
 
-This code will help you fire up a hubdrop server with vagrant.
+This project is used to develop HubDrop.  You need Vagrant 1.5 or later.
+
+This project now uses Ansible for radically simple provisioning.
 
 Setup
 -----
-Follow the instructions at https://github.com/hubdrop/development to get HubDrop Vagrant up and running.
 
-After cloning this repo, run `init.sh`.
+Everything is now built into the Vagrantfile.  To get an instance of hubdrop running,
+simply:
 
-Additional Repos
-----------------
-`init.sh` clones the repos for `hubdrop/app` and `hubdrop/cookbooks` to this folder.  These folders are added as vagrant shared folders. 
+1. Clone this repo and change directory:
 
-Edit the source code in these folders to develop hubdrop.  These folders are available inside the VM at `/app` and `/var/chef/cookbooks`
+  ```
+  $ git clone git@github.com:hubdrop/vagrant.git
+  $ cd vagrant
+  ```
 
+2. Vagrant up:
 
-Configuring your Network Adapter
---------------------------------
+  ```
+  $ vagrant up
+  ```
+  Then, you should be able to visit [http://hubdrop.local](http://hubdrop.local) 
 
-The attributes.json is used to determine the network adapter your virtual machine uses to connect to the internet.
+The Vagrantfile will clone the hubdrop app source for you and provision a vagrant server.
 
-If your adapter is not `eth0` you must edit attributes.json.
-
-You can call the following command to determine your adapter's name.
-
-    $ VBoxManage list bridgedifs | grep ^Name
-    Name:            en0: Wi-Fi (AirPort)
-
-  Enter the entire string into attributes.json at "adapter".
-  In the example above the line in attributes.json  would look like:
-
-  "adapter": "en0: Wi-Fi (AirPort)",
-
-Configuring your IP
--------------------
-
-If, for some reason, another device on your network uses the IP 10.10.10.10, you can change it in attributes.json.
-
-
-Reloading Chef Recipes
-----------------------
-
-`vagrant reload` can take a while, and can break sometimes.  If you just want to quickly run chef-solo, using your edited cookbooks, you can do so by ssh'ing into the vagrant:
-
-    $ vagrant ssh
-    vagrant@hostname:~$ sudo chef-solo -j /vagrant/attributes.json
-
-
+Vagrant will handle saving a hosts file record so when you are done with `vagrant up` simply visit and you should see the website.
