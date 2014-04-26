@@ -44,7 +44,6 @@
 
     # Clone the app
     - name: Clone App source code.
-      remote_user: hubdrop
       git:
         repo={{ app_repo }}
         dest=/var/hubdrop/app
@@ -60,6 +59,9 @@
     - file: path=/var/hubdrop/app/app/cache owner=www-data group=hubdrop state=directory
     - file: path=/var/hubdrop/app/app/logs owner=www-data group=hubdrop state=directory
 
+    ##
+    # APACHE
+    #
     # Set apache vhost
     - name: Apache | Enable some required modules
       action: command a2enmod rewrite vhost_alias
@@ -76,4 +78,13 @@
     - name: Apache | reload
       action: command service apache2 reload
 
+    ##
+    # HUBDROP COMMANDS
+    #
+    - name: HubDrop | Set up hubdrop executable
+      template: src=templates/usr-bin-hubdrop.j2 dest=/usr/bin/hubdrop mode=0755
 
+    ##
+    # JENKINS
+    # @TODO
+    #
