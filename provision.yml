@@ -1,0 +1,75 @@
+##
+# HubDrop Server
+#
+
+---
+- hosts: all
+  user: root
+
+  vars_files:
+    - settings.yml
+    - settings.local.yml
+
+  tasks:
+
+    - hostname: name={{ server_hostname }}
+
+    - name: Message of the day.
+      action: template src=templates/motd.j2 dest=/etc/update-motd.d/95-ansible mode=755
+
+    - name: Create HubDrop User
+      user:
+        name=hubdrop
+        shell=/bin/bash
+        groups=www-data
+        append=yes
+        home=/var/hubdrop
+        generate_ssh_key=yes
+
+    # Apt package installation of required software.
+    - name: Packages | Install required packages.
+      action: apt pkg={{ item }} state=installed
+      with_items:
+        - php5
+        - apache2
+        - php-apc
+        - php5-xmlrpc
+        - php5-curl
+        - php5-gd
+        - sendmail
+        - vim
+        - git
+        - apache2
+
+    # Clone the app
+    - name: Clone App source code.
+      remote_user: hubdrop
+      git:
+        repo={{ app_repo }}
+        dest=/var/hubdrop/app
+        version={{ app_version }}
+
+    # Change ownership to hubdrop
+    - file: path=/var/hubdrop/app owner=hubdrop group=hubdrop recurse=yes state=directory
+
+    # Give app.php to www-data
+    - file: path=/var/hubdrop/app/web/app.php owner=www-data group=hubdrop
+
+    # Create cache and logs folders
+    - file: path=/var/hubdrop/app/app/cache owner=www-data group=hubdrop state=directory
+    - file: path=/var/hubdrop/app/app/logs owner=www-data group=hubdrop state=directory
+
+    # Set apache vhost
+    - name: Apache | Enable some required modules
+      action: command a2enmod rewrite vhost_alias
+
+    - name: Apache | Configuration file for our site
+      action: template src=templates/apache-vhost.j2 dest=/etc/apache2/sites-available/{{ server_hostname }}
+
+    - name: Apache | Disable the default site
+      action: command a2dissite default
+
+    - name: Apache | Enable our new site
+      action: command a2ensite {{ server_hostname }}
+
+

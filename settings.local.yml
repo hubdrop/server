@@ -1,0 +1,12 @@
+##
+# Settings for HubDrop Server
+#
+
+##
+#
+#
+
+---
+
+#app_repo: git@github.com:hubdrop/app.git
+server_hostname: hubdrop.local

@@ -1,0 +1,14 @@
+<VirtualHost *:80>
+	ServerAdmin {{ apache_server_admin }}
+	ServerAlias {{ apache_server_alias }}
+
+	DocumentRoot /var/hubdrop/app/web
+
+	<Directory /var/hubdrop/app/web>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride All
+		Order allow,deny
+		allow from all
+	</Directory>
+
+</VirtualHost>
