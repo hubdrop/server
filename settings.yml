@@ -10,49 +10,47 @@
 app_repo: http://github.com/hubdrop/app.git
 app_version: master
 
-vansible_ip: '9.9.9.9'
-vansible_playbook: 'provision.yml'
-vansible_memory: '2048'
-vansible_adapter: 'wlan0'
-
-
 # Hostname is important as we need to delete an anonymous MySQL
 # user that is created with this name, make sure you match this
 # up with the output of the command 'hostname' on the server.
-server_hostname: 'localhost'
-hubdrop_ssh_key_file: '$HOME/.ssh/id_rsa'
+server_hostname: 'hubdrop.io'
 
 # mysql
 mysql_root_password: 'password'
 
 # apache
-apache_server_admin: 'webmaster@example.com'
-apache_server_alias: 'localhost'
+apache_document_root: /var/hubdrop/app/web
+apache_server_admin: 'admin@hubdrop.io'
+apache_server_alias: 'hubdrop.io'
 
-# php.ini
-php_memory_limit: '256M'
-php_max_execution_time: '90'
-php_display_errors: 'On'
-php_display_startup_errors: 'On'
-php_html_errors: 'On'
-php_post_max_size: '32M'
-php_upload_max_filesize: '32M'
-php_date_timezone: 'US/Central'
+apache_error_log_root: /var/hubdrop/logs/error.log
+apache_access_log_root: /var/hubdrop/logs/access.log
 
-# apc.ini
-apc_rfc1867: '1'
-apc_shm_size: '256M'
-apc_shm_segments: '1'
-apc_num_files_hint: '0'
-
-# my.cnf
-mysql_max_allowed_packet: '128M'
-mysql_character_set_server: 'utf8'
-mysql_collation_server: 'utf8_general_ci'
-innodb_file_per_table: 'innodb_file_per_table'
-
-# vsftpd
-vsftpd_anonymous_enable: 'NO'
-vsftpd_local_enable: 'YES'
-vsftpd_write_enable: 'YES'
-vsftpd_local_umask: '002'
+## php.ini
+# Commented out until we are using them.
+#php_memory_limit: '256M'
+#php_max_execution_time: '90'
+#php_display_errors: 'On'
+#php_display_startup_errors: 'On'
+#php_html_errors: 'On'
+#php_post_max_size: '32M'
+#php_upload_max_filesize: '32M'
+#php_date_timezone: 'US/Central'
+#
+## apc.ini
+#apc_rfc1867: '1'
+#apc_shm_size: '256M'
+#apc_shm_segments: '1'
+#apc_num_files_hint: '0'
+#
+## my.cnf
+#mysql_max_allowed_packet: '128M'
+#mysql_character_set_server: 'utf8'
+#mysql_collation_server: 'utf8_general_ci'
+#innodb_file_per_table: 'innodb_file_per_table'
+#
+## vsftpd
+#vsftpd_anonymous_enable: 'NO'
+#vsftpd_local_enable: 'YES'
+#vsftpd_write_enable: 'YES'
+#vsftpd_local_umask: '002'

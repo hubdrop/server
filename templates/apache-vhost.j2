@@ -1,13 +1,20 @@
 
 <VirtualHost *:80>
-    DocumentRoot    "/var/hubdrop/app/web"
+    DocumentRoot    "{{ apache_document_root }}"
     DirectoryIndex  index.php index.html
+
     SetEnv          SYMFONY__APP__GITHUB__USERNAME hubdrop-user
     SetEnv          SYMFONY__APP__GITHUB__ORGANIZATION drupalprojects
-    SetEnv          SYMFONY__APP__DRUPAL__USER hubdrop
+    SetEnv          SYMFONY__APP__DRUPAL__USERNAME hubdrop
+    SetEnv          SYMFONY__APP__GITHUB__AUTHORIZATION
+    SetEnv          SYMFONY__APP__URL {{ server_hostname }}
 
-    <Directory "/var/hubdrop/app/web">
+    <Directory "{{ apache_document_root }}">
         AllowOverride All
         Allow from All
     </Directory>
+
+    ErrorLog {{ apache_error_log_root }}
+    CustomLog {{ apache_access_log_root }} combined
+
 </VirtualHost>

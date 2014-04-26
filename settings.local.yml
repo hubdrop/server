@@ -3,10 +3,18 @@
 #
 
 ##
-#
+# Settings purely for local dev (in vagrant)
 #
 
 ---
-
-#app_repo: git@github.com:hubdrop/app.git
 server_hostname: hubdrop.local
+
+# Vagrant Only variables
+apache_document_root: /app/web
+apache_error_log_root: /app/app/logs/error.log
+apache_access_log_root: /app/app/logs/access.log
+
+vansible_ip: '9.9.9.9'
+vansible_playbook: 'provision.yml'
+vansible_memory: '2048'
+vansible_adapter: 'wlan0'
