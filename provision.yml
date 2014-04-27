@@ -58,7 +58,6 @@
         version={{ app_version }}
 
     - name: HubDrop | Grant ownership of app source code to hubdrop user.
-      when: vagrant == False
       file:
         path={{ app_root }}
         owner=hubdrop group=hubdrop
@@ -66,13 +65,11 @@
         state=directory
 
     - name: HubDrop | Grant ownership of app.php to www-data
-      when: vagrant == False
       file:
         path={{ app_root }}/web/app.php
         owner=www-data group=hubdrop
 
     - name: HubDrop | Create cache folder
-      when: vagrant == False
       file:
         path={{ app_root }}/app/cache
         owner=www-data
@@ -81,7 +78,6 @@
         mode=0664
 
     - name: HubDrop | Create logs folder
-      when: vagrant == False
       file:
         path={{ app_root }}/app/logs
         owner=www-data
