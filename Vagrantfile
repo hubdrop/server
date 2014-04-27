@@ -65,7 +65,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Make local source code available to the VM
   config.vm.synced_folder "app", "/app",
-    owner: 'www-data', group: 'www-data'
+    type: 'nfs'
 
 end
 
