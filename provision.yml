@@ -17,15 +17,6 @@
     - name: Message of the day.
       action: template src=templates/motd.j2 dest=/etc/update-motd.d/95-ansible mode=755
 
-    - name: Create HubDrop User
-      user:
-        name=hubdrop
-        shell=/bin/bash
-        groups=www-data
-        append=yes
-        home=/var/hubdrop
-        generate_ssh_key=yes
-
     # Apt package installation of required software.
     - name: Packages | Install required packages.
       action: apt pkg={{ item }} state=installed
@@ -45,8 +36,22 @@
     # HubDrop App
     #
 
+    # Create the hubdrop user
+    - name: HubDrop | Create HubDrop User
+      user:
+        name=hubdrop
+        shell=/bin/bash
+        groups=www-data
+        append=yes
+        home=/var/hubdrop
+        generate_ssh_key=yes
+
+    # Save .ssh/config
+    - name: HubDrop | Save SSH config file.
+      template: src=templates/ssh-config.j2 dest=/var/hubdrop/.ssh/config mode=0600
+
     # Clone the app
-    - name: Clone App source code.
+    - name: HubDrop | Clone App source code.
       git:
         repo={{ app_repo }}
         dest=/var/hubdrop/app
