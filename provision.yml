@@ -67,9 +67,16 @@
     - file: path=/var/hubdrop/app/app/cache owner=www-data group=hubdrop state=directory
     - file: path=/var/hubdrop/app/app/logs owner=www-data group=hubdrop state=directory
 
-    # Set up `hubdrop` executable command
+    # Set up `hubdrop` and `hubdrop-jenkins` executable commands
     - name: HubDrop | Set up hubdrop executable
-      template: src=templates/usr-bin-hubdrop.j2 dest=/usr/bin/hubdrop mode=0755
+      template:
+        src=templates/usr-bin-hubdrop.j2
+        dest=/usr/bin/hubdrop mode=0755
+
+    - name: HubDrop | Set up hubdrop-jenkins executable
+      template:
+        src=templates/usr-bin-hubdrop-jenkins.j2
+        dest=/usr/bin/hubdrop-jenkins mode=0755
 
     # Set environment variables for console.  Variables also set in apache-vhost.j2
     - name: HubDrop | Set global environment variables
@@ -104,7 +111,27 @@
     # @TODO: Add Jobs, SUDO config, and web UI configuration
 
     # Install jenkins apt package.
-    - name: Packages | Install jenkins
+    - name: Jenkins | Install jenkins package
       apt: pkg={{ item }} state=installed
       with_items:
         - jenkins
+
+    # Save jenkins jobs
+    # Create Mirror job
+    - file: path=/var/lib/jenkins/jobs/create-mirror owner=jenkins group=jenkins recurse=yes state=directory
+    - template: src=templates/jenkins-create-mirror-config.xml.j2 dest=/var/lib/jenkins/jobs/create-mirror/config.xml mode=0644
+
+    # Update Mirror job
+    - file: path=/var/lib/jenkins/jobs/update-mirror owner=jenkins group=jenkins recurse=yes state=directory
+    - template: src=templates/jenkins-update-mirror-config.xml.j2 dest=/var/lib/jenkins/jobs/update-mirror/config.xml mode=0644
+
+    # Update all Mirrors job
+    - file: path=/var/lib/jenkins/jobs/update-mirrors owner=jenkins group=jenkins recurse=yes state=directory
+    - template: src=templates/jenkins-update-mirrors-config.xml.j2 dest=/var/lib/jenkins/jobs/update-mirrors/config.xml mode=0644
+
+    # Grant jenkins ability to run "sudo hubdrop-jenkins" without a password.
+
+    # @TODO:
+    # Command for jenkins-cli
+
+    # Setup github authorization
