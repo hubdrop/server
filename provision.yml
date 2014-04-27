@@ -14,11 +14,10 @@
 
     - hostname: name={{ server_hostname }}
 
-    - name: Message of the day.
+    - name: Setup | Message of the day.
       action: template src=templates/motd.j2 dest=/etc/update-motd.d/95-ansible mode=755
 
-    # Apt package installation of required software.
-    - name: Packages | Install required packages.
+    - name: Setup | Install required packages.
       action: apt pkg={{ item }} state=installed
       with_items:
         - php5
@@ -36,7 +35,6 @@
     # HubDrop App
     #
 
-    # Create the hubdrop user
     - name: HubDrop | Create HubDrop User
       user:
         name=hubdrop
@@ -46,88 +44,122 @@
         home=/var/hubdrop
         generate_ssh_key=yes
 
-    # Save .ssh/config
     - name: HubDrop | Save SSH config file.
-      template: src=templates/ssh-config.j2 dest=/var/hubdrop/.ssh/config mode=0600
+      template:
+        src=templates/ssh-config.j2
+        dest=/var/hubdrop/.ssh/config
+        mode=0600
 
-    # Clone the app
-    - name: HubDrop | Clone App source code.
+    - name: HubDrop | Clone app source code.
+      when: vagrant == False
       git:
         repo={{ app_repo }}
-        dest=/var/hubdrop/app
+        dest={{ app_root }}
         version={{ app_version }}
 
-    # Change ownership to hubdrop
-    - file: path=/var/hubdrop/app owner=hubdrop group=hubdrop recurse=yes state=directory
+    - name: HubDrop | Grant ownership of app source code to hubdrop user.
+      when: vagrant == False
+      file:
+        path={{ app_root }}
+        owner=hubdrop group=hubdrop
+        recurse=yes
+        state=directory
 
-    # Give app.php to www-data
-    - file: path=/var/hubdrop/app/web/app.php owner=www-data group=hubdrop
+    - name: HubDrop | Grant ownership of app.php to www-data
+      when: vagrant == False
+      file:
+        path={{ app_root }}/web/app.php
+        owner=www-data group=hubdrop
 
-    # Create cache and logs folders
-    - file: path=/var/hubdrop/app/app/cache owner=www-data group=hubdrop state=directory
-    - file: path=/var/hubdrop/app/app/logs owner=www-data group=hubdrop state=directory
+    - name: HubDrop | Create cache folder
+      when: vagrant == False
+      file:
+        path={{ app_root }}/app/cache
+        owner=www-data
+        group=hubdrop
+        state=directory
+        mode=0664
 
-    # Set up `hubdrop` and `hubdrop-jenkins` executable commands
-    - name: HubDrop | Set up hubdrop executable
+    - name: HubDrop | Create logs folder
+      when: vagrant == False
+      file:
+        path={{ app_root }}/app/logs
+        owner=www-data
+        group=hubdrop
+        state=directory
+        mode=0664
+
+    - name: HubDrop | Set up `hubdrop` executable
       template:
         src=templates/usr-bin-hubdrop.j2
-        dest=/usr/bin/hubdrop mode=0755
+        dest=/usr/bin/hubdrop
+        mode=0755
 
-    - name: HubDrop | Set up hubdrop-jenkins executable
+    - name: HubDrop | Set up `hubdrop-jenkins` executable
       template:
         src=templates/usr-bin-hubdrop-jenkins.j2
-        dest=/usr/bin/hubdrop-jenkins mode=0755
+        dest=/usr/bin/hubdrop-jenkins
+        mode=0755
 
-    # Set environment variables for console.  Variables also set in apache-vhost.j2
     - name: HubDrop | Set global environment variables
-      template: src=templates/etc-profile-d-hubdrop-environment.sh.j2 dest=/etc/profile.d/hubdrop-environment.sh mode=0644
+      template:
+        src=templates/etc-profile-d-hubdrop-environment.sh.j2
+        dest=/etc/profile.d/hubdrop-environment.sh
+        mode=0644
 
     ##
     # APACHE
     #
 
-    # Enable modules rewrite and vhost_alias
-    - name: Apache | Enable some required modules
+    - name: Apache | Enable rewrite and vhost_alias modules.
       action: command a2enmod rewrite vhost_alias
 
-    # Save vhost config file
-    - name: Apache | Configuration file for our site
-      action: template src=templates/apache-vhost.j2 dest=/etc/apache2/sites-available/{{ server_hostname }}
-
-    # Disable the default site (@TODO: Should we just remove it to speed up provisioning?)
-    - name: Apache | Disable the default site
+    # @TODO: Should we just remove it to speed up provisioning?
+    - name: Apache | Disable the default site.
       action: command a2dissite default
 
-    # Enable our apache site (@TODO: Should we just create the symlink ourselves to speed up provisioning?
-    - name: Apache | Enable our new site
-      action: command a2ensite {{ server_hostname }}
+    - name: Apache | Save virtualhost configuration file.
+      action: template src=templates/apache-vhost.j2 dest=/etc/apache2/sites-available/{{ server_hostname }}
 
-    # Reload Apache (@TODO: Only do this if we altered the vhost config)
-    - name: Apache | reload
-      action: command service apache2 reload
+    # @TODO: Should we just create the symlink ourselves to speed up provisioning?
+    - name: Apache | Enable hubdrop.io site.
+      action: command a2ensite {{ server_hostname }}
+      notify:
+        - restart apache
 
     ##
     # JENKINS
-    # @TODO: Add Jobs, SUDO config, and web UI configuration
+    #
 
-    # Install jenkins apt package.
-    - name: Jenkins | Install jenkins package
+    - name: Jenkins | Install jenkins apt package
       apt: pkg={{ item }} state=installed
       with_items:
         - jenkins
 
-    # Save jenkins jobs
+
+    - name: Jenkins | Create jobs directory.
+      file: path=/var/lib/jenkins/jobs owner=jenkins group=jenkins recurse=yes state=directory
+
     # Create Mirror job
-    - file: path=/var/lib/jenkins/jobs/create-mirror owner=jenkins group=jenkins recurse=yes state=directory
-    - template: src=templates/jenkins-create-mirror-config.xml.j2 dest=/var/lib/jenkins/jobs/create-mirror/config.xml mode=0644
+    - name: Jenkins | Set up "create-mirror" job directory.
+      file: path=/var/lib/jenkins/jobs/create-mirror owner=jenkins group=jenkins recurse=yes state=directory
+
+    - name: Jenkins | Set up "create-mirror" job config file.
+      template: src=templates/jenkins-create-mirror-config.xml.j2 dest=/var/lib/jenkins/jobs/create-mirror/config.xml mode=0644
 
     # Update Mirror job
-    - file: path=/var/lib/jenkins/jobs/update-mirror owner=jenkins group=jenkins recurse=yes state=directory
-    - template: src=templates/jenkins-update-mirror-config.xml.j2 dest=/var/lib/jenkins/jobs/update-mirror/config.xml mode=0644
+    - name: Jenkins | Set up "update-mirror" job directory.
+      file: path=/var/lib/jenkins/jobs/update-mirror owner=jenkins group=jenkins recurse=yes state=directory
+
+    - name: Jenkins | Set up "update-mirror" job config file.
+      template: src=templates/jenkins-update-mirror-config.xml.j2 dest=/var/lib/jenkins/jobs/update-mirror/config.xml mode=0644
 
     # Update all Mirrors job
-    - file: path=/var/lib/jenkins/jobs/update-mirrors owner=jenkins group=jenkins recurse=yes state=directory
-    - template: src=templates/jenkins-update-mirrors-config.xml.j2 dest=/var/lib/jenkins/jobs/update-mirrors/config.xml mode=0644
+    - name: Jenkins | Set up "update-mirrors" job directory.
+      file: path=/var/lib/jenkins/jobs/update-mirrors owner=jenkins group=jenkins recurse=yes state=directory
+
+    - name: Jenkins | Set up "update-mirrors" job config file.
+      template: src=templates/jenkins-update-mirrors-config.xml.j2 dest=/var/lib/jenkins/jobs/update-mirrors/config.xml mode=0644
 
     - name: Configure sudo privileges for jenkins
       template:
@@ -136,7 +168,13 @@
         mode=0440
 
 
-    # @TODO:
-    # Command for jenkins-cli
+    # @TODO Setup jenkins-cli executable
+    # @TODO Setup github authorization
+    # Let's use http://docs.ansible.com/playbooks_prompts.html
 
-    # Setup github authorization
+    - name: ensure apache is running
+      service: name=apache2 state=started
+
+  handlers:
+    - name: restart apache
+      service: name=apache2 state=restarted
