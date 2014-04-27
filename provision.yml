@@ -40,7 +40,10 @@
         - vim
         - git
         - apache2
-        - jenkins
+
+    ##
+    # HubDrop App
+    #
 
     # Clone the app
     - name: Clone App source code.
@@ -59,32 +62,44 @@
     - file: path=/var/hubdrop/app/app/cache owner=www-data group=hubdrop state=directory
     - file: path=/var/hubdrop/app/app/logs owner=www-data group=hubdrop state=directory
 
+    # Set up `hubdrop` executable command
+    - name: HubDrop | Set up hubdrop executable
+      template: src=templates/usr-bin-hubdrop.j2 dest=/usr/bin/hubdrop mode=0755
+
+    # Set environment variables for console.  Variables also set in apache-vhost.j2
+    - name: HubDrop | Set global environment variables
+      template: src=templates/etc-profile-d-hubdrop-environment.sh.j2 dest=/etc/profile.d/hubdrop-environment.sh mode=0644
+
     ##
     # APACHE
     #
-    # Set apache vhost
+
+    # Enable modules rewrite and vhost_alias
     - name: Apache | Enable some required modules
       action: command a2enmod rewrite vhost_alias
 
+    # Save vhost config file
     - name: Apache | Configuration file for our site
       action: template src=templates/apache-vhost.j2 dest=/etc/apache2/sites-available/{{ server_hostname }}
 
+    # Disable the default site (@TODO: Should we just remove it to speed up provisioning?)
     - name: Apache | Disable the default site
       action: command a2dissite default
 
+    # Enable our apache site (@TODO: Should we just create the symlink ourselves to speed up provisioning?
     - name: Apache | Enable our new site
       action: command a2ensite {{ server_hostname }}
 
+    # Reload Apache (@TODO: Only do this if we altered the vhost config)
     - name: Apache | reload
       action: command service apache2 reload
 
     ##
-    # HUBDROP COMMANDS
-    #
-    - name: HubDrop | Set up hubdrop executable
-      template: src=templates/usr-bin-hubdrop.j2 dest=/usr/bin/hubdrop mode=0755
-
-    ##
     # JENKINS
-    # @TODO
-    #
+    # @TODO: Add Jobs, SUDO config, and web UI configuration
+
+    # Install jenkins apt package.
+    - name: Packages | Install jenkins
+      apt: pkg={{ item }} state=installed
+      with_items:
+        - jenkins
