@@ -25,6 +25,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "hashicorp/precise64"
   config.vm.hostname = settings['server_hostname']
 
+  config.nfs.map_uid = 1010
+  config.nfs.map_gid = 1010
+
   # Sets IP of the guest machine and allows it to connect to the internet.
   # @TODO: Add the adapter to settings.global.yml. Almost always wlan0
   config.vm.network :private_network, ip:  settings['vansible_ip']

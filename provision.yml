@@ -43,11 +43,14 @@
         append=yes
         home=/var/hubdrop
         generate_ssh_key=yes
+        uid=1010
 
     - name: HubDrop | Save SSH config file.
       template:
         src=templates/ssh-config.j2
         dest=/var/hubdrop/.ssh/config
+        owner=hubdrop
+        group=hubdrop
         mode=0600
 
     - name: HubDrop | Clone app source code.
@@ -58,6 +61,7 @@
         version={{ app_version }}
 
     - name: HubDrop | Grant ownership of app source code to hubdrop user.
+      when: vagrant == False
       file:
         path={{ app_root }}
         owner=hubdrop group=hubdrop
@@ -65,21 +69,24 @@
         state=directory
 
     - name: HubDrop | Grant ownership of app.php to www-data
+      when: vagrant == False
       file:
         path={{ app_root }}/web/app.php
         owner=www-data group=hubdrop
 
     - name: HubDrop | Create cache folder
+      when: vagrant == False
       file:
-        path={{ app_root }}/app/cache
+        path=/var/hubdrop/cache
         owner=www-data
         group=hubdrop
         state=directory
         mode=0664
 
     - name: HubDrop | Create logs folder
+      when: vagrant == False
       file:
-        path={{ app_root }}/app/logs
+        path=/var/hubdrop/logs
         owner=www-data
         group=hubdrop
         state=directory

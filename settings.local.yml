@@ -14,8 +14,8 @@ app_root: /app
 vagrant: True
 
 apache_document_root: /app/web
-apache_error_log_root: /app/app/logs/error.log
-apache_access_log_root: /app/app/logs/access.log
+#apache_error_log_root: /app/app/logs/error.log
+#apache_access_log_root: /app/app/logs/access.log
 
 vansible_ip: '9.9.9.9'
 vansible_playbook: 'provision.yml'
