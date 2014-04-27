@@ -129,7 +129,12 @@
     - file: path=/var/lib/jenkins/jobs/update-mirrors owner=jenkins group=jenkins recurse=yes state=directory
     - template: src=templates/jenkins-update-mirrors-config.xml.j2 dest=/var/lib/jenkins/jobs/update-mirrors/config.xml mode=0644
 
-    # Grant jenkins ability to run "sudo hubdrop-jenkins" without a password.
+    - name: Configure sudo privileges for jenkins
+      template:
+        src=templates/etc-sudoers-d-jenkins.j2
+        dest=/etc/sudoers.d/jenkins
+        mode=0440
+
 
     # @TODO:
     # Command for jenkins-cli
