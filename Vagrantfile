@@ -55,6 +55,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision "shell",
     inline: "cd /vagrant; ansible-playbook -c local  -i '#{settings['server_hostname']},' #{settings['vansible_playbook']} --extra-vars 'authorized_keys=\"#{ssh_public_key}\"'"
 
+  # Extra provisioning for vagrant
+  config.vm.provision "shell",
+    inline: "cd /vagrant; ansible-playbook -c local  -i '#{settings['server_hostname']},' provision.vagrant.yml"
+
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--memory", settings['vansible_memory']]
   end

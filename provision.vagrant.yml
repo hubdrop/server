@@ -1,0 +1,20 @@
+##
+# Extra Vagrant provisioning
+#
+
+---
+- hosts: all
+  user: root
+
+  vars_files:
+    - settings.yml
+    - settings.local.yml
+
+  tasks:
+
+    # Copy host machines SSH keys to guest
+    - name: SSH Keys | Copy private key from Host to Guest
+      copy: src=/home/vagrant/.ssh_host/id_rsa dest=/var/hubdrop/.ssh/id_rsa owner=hubdrop group=hubdrop mode=0600
+
+    - name: SSH Keys | Copy public key from Host to Guest
+      copy: src=/home/vagrant/.ssh_host/id_rsa.pub dest=/var/hubdrop/.ssh/id_rsa.pub owner=hubdrop group=hubdrop mode=0600
