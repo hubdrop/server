@@ -9,8 +9,10 @@
 ---
 app_repo: http://github.com/hubdrop/app.git
 app_version: master
+app_root: '/var/hubdrop/app'
 
 server_hostname: 'hubdrop.io'
+
 
 
 
