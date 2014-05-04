@@ -6,19 +6,19 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Look for project settings file.
-  if !(File.exists?("settings.yml"))
+  if !(File.exists?("#{File.dirname(__FILE__)}/settings.yml"))
     raise NoSettingsException
   end
 
   # Load the yml files
   require 'yaml'
-  settings = YAML.load_file('settings.yml')
-  settings.merge!(YAML.load_file('settings.local.yml'))
+  settings = YAML.load_file("#{File.dirname(__FILE__)}/settings.yml")
+  settings.merge!(YAML.load_file("#{File.dirname(__FILE__)}/settings.local.yml"))
 
 
   # Clone project repo to `./src` if the folder doesn't exist yet, and the setting exists.
-  if !(File.directory?("app"))
-    system("git clone #{settings['app_repo']} app")
+  if !(File.directory?("#{File.dirname(__FILE__)}/app"))
+    system("git clone #{settings['app_repo']} #{File.dirname(__FILE__)}/app")
   end
 
   # Config the VM
