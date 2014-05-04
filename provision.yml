@@ -75,7 +75,6 @@
         owner=www-data group=hubdrop
 
     - name: HubDrop | Create cache folder
-      when: vagrant == False
       file:
         path=/var/hubdrop/cache
         owner=www-data
@@ -84,7 +83,6 @@
         mode=0664
 
     - name: HubDrop | Create logs folder
-      when: vagrant == False
       file:
         path=/var/hubdrop/logs
         owner=www-data
