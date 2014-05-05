@@ -24,8 +24,8 @@ apache_document_root: /var/hubdrop/app/web
 apache_server_admin: 'admin@hubdrop.io'
 apache_server_alias: 'hubdrop.io'
 
-apache_error_log_root: /tmp/app/logs/apache.error.log
-apache_access_log_root: /tmp/app/logs/apache.access.log
+apache_error_log_root: /var/hubdrop/logs/apache.error.log
+apache_access_log_root: /var/hubdrop/logs/apache.access.log
 
 ## php.ini
 # Commented out until we are using them.
