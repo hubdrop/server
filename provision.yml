@@ -164,7 +164,12 @@
       notify:
         - restart jenkins
 
-    # @TODO Setup jenkins-cli executable
+    - name: Jenkins | Setup jenkins cli conf.
+      template:
+        src=templates/etc-jenkins-cli.conf.j2
+        dest=/etc/jenkins/cli.conf
+        mode=0644
+
     # @TODO Setup github authorization
     # Let's use http://docs.ansible.com/playbooks_prompts.html
 
