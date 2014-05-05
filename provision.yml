@@ -90,6 +90,11 @@
         state=directory
         mode=0774
 
+    - name: HubDrop | Setup ACL for logs and cache.
+      command: setfacl -R -m u:www-data:rwX -m u:hubdrop:rwX /var/hubdrop/cache /var/hubdrop/logs
+      command: setfacl -dR -m u:www-data:rwx -m u:hubdrop:rwx /var/hubdrop/cache /var/hubdrop/logs
+
+
     - name: HubDrop | Set up `hubdrop` executable
       template:
         src=templates/usr-bin-hubdrop.j2
