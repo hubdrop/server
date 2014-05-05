@@ -9,6 +9,9 @@
     SetEnv          SYMFONY__APP__GITHUB__AUTHORIZATION
     SetEnv          SYMFONY__APP__URL {{ server_hostname }}
 
+    SetEnv          SYMFONY__APP__JENKINS_URL http://{{ server_hostname }}:8080
+
+
     <Directory "{{ apache_document_root }}">
         AllowOverride All
         Allow from All
