@@ -77,18 +77,18 @@
     - name: HubDrop | Create cache folder
       file:
         path=/var/hubdrop/cache
-        owner=www-data
-        group=hubdrop
+        owner=hubdrop
+        group=www-data
         state=directory
-        mode=0664
+        mode=0774
 
     - name: HubDrop | Create logs folder
       file:
         path=/var/hubdrop/logs
-        owner=www-data
-        group=hubdrop
+        owner=hubdrop
+        group=www-data
         state=directory
-        mode=0664
+        mode=0774
 
     - name: HubDrop | Set up `hubdrop` executable
       template:
