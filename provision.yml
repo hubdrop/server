@@ -146,33 +146,23 @@
     - name: Jenkins | Create jobs directory.
       file: path=/var/lib/jenkins/jobs owner=jenkins group=jenkins recurse=yes state=directory
 
-    # Create Mirror job
-    - name: Jenkins | Set up "create-mirror" job directory.
-      file: path=/var/lib/jenkins/jobs/create-mirror owner=jenkins group=jenkins recurse=yes state=directory
+    - name: Jenkins | Setup jenkins jobs folders.
+      file:
+        path=/var/lib/jenkins/jobs/{{ item }}
+        owner=jenkins
+        group=jenkins
+        recurse=yes
+        state=directory
+      with_items: jenkins_jobs
 
-    - name: Jenkins | Set up "create-mirror" job config file.
-      template: src=templates/jenkins-create-mirror-config.xml.j2 dest=/var/lib/jenkins/jobs/create-mirror/config.xml mode=0644
-
-    # Update Mirror job
-    - name: Jenkins | Set up "update-mirror" job directory.
-      file: path=/var/lib/jenkins/jobs/update-mirror owner=jenkins group=jenkins recurse=yes state=directory
-
-    - name: Jenkins | Set up "update-mirror" job config file.
-      template: src=templates/jenkins-update-mirror-config.xml.j2 dest=/var/lib/jenkins/jobs/update-mirror/config.xml mode=0644
-
-    # Update all Mirrors job
-    - name: Jenkins | Set up "update-mirrors" job directory.
-      file: path=/var/lib/jenkins/jobs/update-mirrors owner=jenkins group=jenkins recurse=yes state=directory
-
-    - name: Jenkins | Set up "update-mirrors" job config file.
-      template: src=templates/jenkins-update-mirrors-config.xml.j2 dest=/var/lib/jenkins/jobs/update-mirrors/config.xml mode=0644
-
-    - name: Configure sudo privileges for jenkins
+    - name: Jenkins | Setup jenkins jobs.
       template:
-        src=templates/etc-sudoers-d-jenkins.j2
-        dest=/etc/sudoers.d/jenkins
-        mode=0440
-
+        src=templates/jenkins-{{ item }}-config.xml.j2
+        dest=/var/lib/jenkins/jobs/{{ item }}/config.xml
+        mode=0644
+      with_items: jenkins_jobs
+      notify:
+        - restart jenkins
 
     # @TODO Setup jenkins-cli executable
     # @TODO Setup github authorization
@@ -184,3 +174,6 @@
   handlers:
     - name: restart apache
       service: name=apache2 state=restarted
+
+    - name: restart jenkins
+      action: service name=jenkins state=restarted

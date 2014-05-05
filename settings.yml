@@ -27,6 +27,12 @@ apache_server_alias: 'hubdrop.io'
 apache_error_log_root: /var/hubdrop/logs/apache.error.log
 apache_access_log_root: /var/hubdrop/logs/apache.access.log
 
+# jenkins
+jenkins_jobs:
+  - create-mirror
+  - update-mirror
+  - update-mirrors
+
 ## php.ini
 # Commented out until we are using them.
 #php_memory_limit: '256M'
