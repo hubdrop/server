@@ -53,6 +53,8 @@
         group=hubdrop
         mode=0600
 
+    # @TODO: Generate SSH keys
+
     - name: HubDrop | Clone app source code.
       when: vagrant == False
       git:
@@ -170,8 +172,7 @@
         dest=/etc/jenkins/cli.conf
         mode=0644
 
-    # @TODO Setup github authorization
-    # Let's use http://docs.ansible.com/playbooks_prompts.html
+    # @TODO Setup github authorization by running hubdrop:github
 
     - name: ensure apache is running
       service: name=apache2 state=started

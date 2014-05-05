@@ -20,4 +20,4 @@ apache_document_root: /app/web
 vansible_ip: '9.9.9.9'
 vansible_playbook: 'provision.yml'
 vansible_memory: '2048'
-vansible_adapter: 'wlan0'
+vansible_adapter: 'eth0'
