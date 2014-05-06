@@ -9,6 +9,10 @@
 ---
 server_hostname: hubdrop.local
 
+# Create a github application and put your client ID and secret here.
+github_client_id:
+github_client_secret:
+
 # Vagrant Only variables
 app_root: /app
 vagrant: True
