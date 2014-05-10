@@ -30,6 +30,7 @@
         - vim
         - git
         - apache2
+        - acl
 
     ##
     # HubDrop App
