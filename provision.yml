@@ -136,6 +136,9 @@
       notify:
         - restart apache
 
+    - name: Apache | Add www-data to hubdrop group
+      action: user name=www-data groups=hubdrop append=true
+
     ##
     # JENKINS
     #
@@ -172,6 +175,12 @@
         src=templates/etc-jenkins-cli.conf.j2
         dest=/etc/jenkins/cli.conf
         mode=0644
+
+    - name: Jenkins | Setup jenkins sudo perms.
+      template:
+        src=templates/etc-sudoers-d-jenkins.j2
+        dest=/etc/sudoers.d/jenkins
+        mode=0440
 
     # @TODO Setup github authorization by running hubdrop:github
 
