@@ -13,6 +13,11 @@ server_hostname: hubdrop.local
 app_root: /app
 vagrant: True
 
+hubdrop_github_username: hubdrop-user
+hubdrop_github_organization: drupalprojects
+hubdrop_github_authorization:
+hubdrop_drupal_username: hubdrop
+
 apache_document_root: /app/web
 #apache_error_log_root: /app/app/logs/error.log
 #apache_access_log_root: /app/app/logs/access.log

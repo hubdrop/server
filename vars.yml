@@ -11,6 +11,7 @@ server_hostname: hubdrop.io
 
 hubdrop_github_username: hubdrop-user
 hubdrop_github_organization: drupalprojects
+hubdrop_github_authorization:
 hubdrop_drupal_username: hubdrop
 
 # apache
