@@ -7,8 +7,7 @@
   user: root
 
   vars_files:
-    - settings.yml
-    - settings.local.yml
+    - vars.yml
 
   tasks:
 
