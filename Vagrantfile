@@ -6,17 +6,16 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Look for project settings file.
-  if !(File.exists?("#{File.dirname(__FILE__)}/settings.yml"))
+  if !(File.exists?("#{File.dirname(__FILE__)}/vars.yml"))
     raise NoSettingsException
   end
 
   # Load the yml files
   require 'yaml'
-  settings = YAML.load_file("#{File.dirname(__FILE__)}/settings.yml")
-  settings.merge!(YAML.load_file("#{File.dirname(__FILE__)}/settings.local.yml"))
+  settings = YAML.load_file("#{File.dirname(__FILE__)}/vars.yml")
+  settings.merge!(YAML.load_file("#{File.dirname(__FILE__)}/vars.local.yml"))
 
-
-  # Clone project repo to `./src` if the folder doesn't exist yet, and the setting exists.
+  # Clone project repo to `./app` if the folder doesn't exist yet, and the setting exists.
   if !(File.directory?("#{File.dirname(__FILE__)}/app"))
     system("git clone #{settings['app_repo']} #{File.dirname(__FILE__)}/app")
   end
@@ -56,11 +55,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Run ansible Provisioner via shell.
   config.vm.provision "shell",
-    inline: "cd /vagrant; ansible-playbook -c local  -i '#{settings['server_hostname']},' #{settings['vansible_playbook']} --extra-vars 'authorized_keys=\"#{ssh_public_key}\"'"
+    inline: "cd /vagrant; ansible-playbook -c local  -i '#{settings['server_hostname']},' playbook.yml --extra-vars 'authorized_keys=\"#{ssh_public_key}\"'"
 
   # Extra provisioning for vagrant
   config.vm.provision "shell",
-    inline: "cd /vagrant; ansible-playbook -c local  -i '#{settings['server_hostname']},' provision.vagrant.yml"
+    inline: "cd /vagrant; ansible-playbook -c local  -i '#{settings['server_hostname']},' playbook.vagrant.yml"
 
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--memory", settings['vansible_memory']]
