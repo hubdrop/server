@@ -53,8 +53,6 @@
         group=hubdrop
         mode=0600
 
-    # @TODO: Generate SSH keys
-
     - name: HubDrop | Clone app source code.
       when: vagrant == False
       git:
