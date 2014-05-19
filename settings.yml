@@ -2,27 +2,20 @@
 # Settings for HubDrop Server
 #
 
-##
-#
-#
-
 ---
 app_repo: http://github.com/hubdrop/app.git
 app_version: master
-app_root: '/var/hubdrop/app'
+app_root: /var/hubdrop/app
 
-server_hostname: 'hubdrop.io'
+server_hostname: hubdrop.io
 
-
-
-
-# mysql
-mysql_root_password: 'password'
+hubdrop_github_username: hubdrop-user
+hubdrop_github_organization: drupalprojects
+hubdrop_drupal_username: hubdrop
 
 # apache
 apache_document_root: /var/hubdrop/app/web
-apache_server_admin: 'admin@hubdrop.io'
-apache_server_alias: 'hubdrop.io'
+apache_server_admin: admin@hubdrop.io
 
 apache_error_log_root: /var/hubdrop/logs/apache.error.log
 apache_access_log_root: /var/hubdrop/logs/apache.access.log
@@ -33,8 +26,12 @@ jenkins_jobs:
   - update-mirror
   - update-mirrors
 
-## php.ini
 # Commented out until we are using them.
+
+# mysql
+#mysql_root_password: password
+
+## php.ini
 #php_memory_limit: '256M'
 #php_max_execution_time: '90'
 #php_display_errors: 'On'

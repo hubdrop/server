@@ -3,11 +3,12 @@
     DocumentRoot    "{{ apache_document_root }}"
     DirectoryIndex  index.php index.html
 
-    SetEnv          SYMFONY__APP__GITHUB__USERNAME hubdrop-user
-    SetEnv          SYMFONY__APP__GITHUB__ORGANIZATION drupalprojects
-    SetEnv          SYMFONY__APP__DRUPAL__USERNAME hubdrop
-    SetEnv          SYMFONY__APP__GITHUB__CLIENT_ID {{ github_client_id }}
-    SetEnv          SYMFONY__APP__GITHUB__CLIENT_SECRET {{ github_client_secret }}
+    SetEnv          SYMFONY__APP__GITHUB__USERNAME {{ hubdrop_github_username }}
+    SetEnv          SYMFONY__APP__GITHUB__ORGANIZATION {{ hubdrop_github_organization }}
+    SetEnv          SYMFONY__APP__DRUPAL__USERNAME {{ hubdrop_drupal_username }}
+
+    SetEnv          SYMFONY__APP__GITHUB__AUTHORIZATION {{ github_authorization }}
+
     SetEnv          SYMFONY__APP__URL {{ server_hostname }}
 
     SetEnv          SYMFONY__APP__JENKINS_URL http://{{ server_hostname }}:8080
