@@ -1,12 +1,12 @@
-HubDrop Vagrant
+HubDrop Server
 ===============
 
-This project is used to develop HubDrop.  You need Vagrant 1.5 or later.
+This project is used to develop & deploy HubDrop.  You want Vagrant 1.6 or later.
 
 This project now uses Ansible for radically simple provisioning.
 
-Setup
------
+Local Development Setup
+-----------------------
 
 Everything is now built into the Vagrantfile.  To get an instance of hubdrop running,
 simply:
@@ -14,8 +14,8 @@ simply:
 1. Clone this repo and change directory:
 
   ```
-  $ git clone git@github.com:hubdrop/vagrant.git
-  $ cd vagrant
+  $ git clone git@github.com:hubdrop/server.git HubDrop
+  $ cd HubDrop
   ```
 
 2. Vagrant up:
@@ -28,3 +28,9 @@ simply:
 The Vagrantfile will clone the hubdrop app source for you and provision a vagrant server.
 
 Vagrant will handle saving a hosts file record so when you are done with `vagrant up` simply visit and you should see the website.
+
+
+Server Deployment
+-----------------
+
+Coming Soon.
