@@ -25,3 +25,6 @@ jenkins_jobs:
   - create-mirror
   - update-mirror
   - update-mirrors
+
+# @TODO: Change this, if we are deploying to digital ocean with vagrant, it doesn't make sense!
+vagrant: False
