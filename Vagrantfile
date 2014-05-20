@@ -53,7 +53,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Run ansible Provisioner via shell.
   config.vm.provision "shell",
-    inline: "cd /vagrant; ansible-playbook -c local  -i '#{settings['server_hostname']},' playbook.yml --extra-vars 'authorized_keys=\"#{ssh_public_key}\"'"
+    inline: "cd /vagrant; ansible-playbook -c local  -i 'default,' playbook.yml --extra-vars 'authorized_keys=\"#{ssh_public_key}\"'"
 
   # Extra provisioning for vagrant
   config.vm.provision "shell",
