@@ -1,6 +1,6 @@
 
 <VirtualHost *:80>
-    DocumentRoot    "{{ apache_document_root }}"
+    DocumentRoot    "{{ app_root }}/web"
     DirectoryIndex  index.php index.html
 
     SetEnv          SYMFONY__APP__GITHUB__USERNAME {{ hubdrop_github_username }}
