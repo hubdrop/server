@@ -9,6 +9,8 @@ app_repo: http://github.com/hubdrop/app.git
 app_version: master
 app_root: /var/hubdrop/app
 
+symfony_environment: prod
+
 hubdrop_github_username: hubdrop-user
 hubdrop_github_organization: drupalprojects
 hubdrop_drupal_username: hubdrop

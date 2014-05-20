@@ -12,6 +12,7 @@ server_hostname: hubdrop.local
 # Vagrant Only variables
 app_root: /vagrant/app
 vagrant: True
+symfony_environment: dev
 
 hubdrop_github_username: hubdrop-user
 hubdrop_github_organization: drupalprojects
