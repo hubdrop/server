@@ -1,0 +1,49 @@
+
+VAGRANTFILE_API_VERSION = "2"
+
+# @TODO: Proper way to save vagrant settings?
+DIGITALOCEAN_KEYS_PATH = "#{File.dirname(__FILE__)}/.vagrant/digitalocean.yml"
+
+
+Vagrant.configure('2') do |config|
+
+  config.vm.provider :digital_ocean do |provider, override|
+    override.ssh.private_key_path = '~/.ssh/id_rsa'
+    override.vm.box = 'digital_ocean'
+    override.vm.box_url = "https://github.com/smdahlen/vagrant-digitalocean/raw/master/box/digital_ocean.box"
+
+    provider.image = 'Ubuntu 12.04.4 x64'
+
+    # Check for DigitalOcean config file.
+    if !(File.exists?(DIGITALOCEAN_KEYS_PATH))
+
+      # @TODO: Prompt the user for their keys
+      File.write(DIGITALOCEAN_KEYS_PATH, 'client_id: YOUR_DO_CLIENT_ID
+api_key: YOUR_DO_API_KEY')
+       raise NoSettingsException
+    end
+
+    digitalocean_settings = YAML.load_file(DIGITALOCEAN_KEYS_PATH)
+
+    require 'yaml'
+
+    provider.client_id = digitalocean_settings['client_id']
+    provider.api_key = digitalocean_settings['api_key']
+
+    # Allow size to be overridden
+    if (digitalocean_settings['size'])
+      provider.size = digitalocean_settings['size']
+    end
+
+    config.vm.provision "ansible" do |ansible|
+      ansible.playbook = "../playbook.yml"
+    end
+
+  end
+end
+
+# Exceptions
+class NoSettingsException < Vagrant::Errors::VagrantError
+  error_message('Edit the .vagrant/digitalocean.yml file with your keys and try again.')
+end
+
