@@ -49,6 +49,8 @@ $ vagrant
 
 The first time you call "vagrant", it will create an empty file located at  `./digitalocean/.vagrant/digitalocean.yml`.
 
+Add `size: 2GB` to adjust the size of the droplet.
+
 Edit this file with your Digital Ocean Client ID and API key.
 
 After that, you can simply call `vagrant up --provider=digital_ocean` to create a new droplet!
