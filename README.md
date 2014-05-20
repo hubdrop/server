@@ -25,9 +25,28 @@ simply:
   ```
   Then, you should be able to visit [http://hubdrop.local](http://hubdrop.local) 
 
-The Vagrantfile will clone the hubdrop app source for you and provision a vagrant server.
+  The Vagrantfile will clone the hubdrop app source for you and provision a vagrant server.
 
-Vagrant will handle saving a hosts file record so when you are done with `vagrant up` simply visit and you should see the website.
+  Vagrant will handle saving a hosts file record so when you are done with `vagrant up` simply visit and you should see the website.
+
+  If you are working on interactions with github or drupal.org, you will need to...
+
+3. Add Authorizations.
+
+  There is an easy to use `configure` command to setup your github authorization and
+  drupal.org password.  It must be called within the VM.
+
+  ```
+  $ vagrant ssh
+  vagrant@hubdrop $ sudo su - hubdrop
+  hubdrop@hubdrop $ hubdrop configure
+  ```
+
+4. Mirror all the repos.
+
+  You can mirror all the already-mirrored repos by running `hubdrop mirror:all`
+
+
 
 Server Deployment
 -----------------
