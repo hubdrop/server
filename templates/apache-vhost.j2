@@ -14,7 +14,7 @@
     SetEnv          SYMFONY__APP__JENKINS_URL http://{{ server_hostname }}:8080
 
 
-    <Directory "{{ apache_document_root }}">
+    <Directory "{{ app_root }}/web">
         AllowOverride All
         Allow from All
     </Directory>

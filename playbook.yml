@@ -8,6 +8,7 @@
 
   vars_files:
     - vars.yml
+    - vars.local.yml
 
   tasks:
 
@@ -54,14 +55,12 @@
         mode=0600
 
     - name: HubDrop | Clone app source code.
-      when: vagrant == False
       git:
         repo={{ app_repo }}
         dest={{ app_root }}
         version={{ app_version }}
 
     - name: HubDrop | Grant ownership of app source code to hubdrop user.
-      when: vagrant == False
       file:
         path={{ app_root }}
         owner=hubdrop group=hubdrop
@@ -69,7 +68,6 @@
         state=directory
 
     - name: HubDrop | Grant ownership of app.php to www-data
-      when: vagrant == False
       file:
         path={{ app_root }}/web/app.php
         owner=www-data group=hubdrop
