@@ -71,6 +71,14 @@
         path={{ app_root }}/web/app.php
         owner=www-data group=hubdrop
 
+    - name: HubDrop | Create repos folder
+      file:
+        path=/var/hubdrop/repos
+        owner=hubdrop
+        group=www-data
+        state=directory
+        mode=0774
+
     - name: HubDrop | Create cache folder
       file:
         path=/var/hubdrop/cache
