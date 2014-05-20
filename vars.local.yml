@@ -17,10 +17,9 @@ hubdrop_github_username: hubdrop-user
 hubdrop_github_organization: drupalprojects
 hubdrop_drupal_username: hubdrop
 
-#apache_error_log_root: /app/app/logs/error.log
-#apache_access_log_root: /app/app/logs/access.log
+#apache_error_log_root: /vagrant/app/app/logs/error.log
+#apache_access_log_root: /vagrant/app/app/logs/access.log
 
-vansible_ip: '9.9.9.9'
-vansible_playbook: 'provision.yml'
-vansible_memory: '2048'
-vansible_adapter: 'wlan0'
+vagrant_ip: '9.9.9.9'
+vagrant_memory: '2048'
+vagrant_adapter: 'wlan0'

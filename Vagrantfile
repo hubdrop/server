@@ -28,9 +28,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.nfs.map_gid = 1010
 
   # Sets IP of the guest machine and allows it to connect to the internet.
-  # @TODO: Add the adapter to settings.global.yml. Almost always wlan0
-  config.vm.network :private_network, ip:  settings['vansible_ip']
-  config.vm.network :public_network, bridge: settings['vansible_adapter']
+  config.vm.network :private_network, ip:  settings['vagrant_ip']
+  config.vm.network :public_network, bridge: settings['vagrant_adapter']
 
   # Sync .ssh folder to guest machine.
   config.vm.synced_folder "#{Dir.home}/.ssh", "/home/vagrant/.ssh_host"
@@ -45,8 +44,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # See https://github.com/mitchellh/vagrant/issues/2103
   # @TODO: Uncomment once vagrant supports this.
   # config.vm.provision "ansible" do |ansible|
-  #   ansible.playbook = settings['vansible_playbook']
-  #   ansible.tags = settings['vansible_tags']
+  #   ansible.playbook = 'playbook.yml'
   # end
 
   # Setup ansible and run the playbook.
@@ -62,12 +60,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     inline: "cd /vagrant; ansible-playbook -c local  -i '#{settings['server_hostname']},' playbook.vagrant.yml"
 
   config.vm.provider :virtualbox do |vb|
-    vb.customize ["modifyvm", :id, "--memory", settings['vansible_memory']]
+    vb.customize ["modifyvm", :id, "--memory", settings['vagrant_memory']]
   end
-
-  # Make local source code available to the VM
-  config.vm.synced_folder "app", "/app",
-    type: 'nfs'
 
 end
 
