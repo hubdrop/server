@@ -51,6 +51,20 @@ simply:
 Server Deployment
 -----------------
 
+### Updating with Ansible
+
+To update the server, you must be able to SSH in as root, and you must have
+ansible installed, and you must have this repository cloned.
+
+Once you do, simply run:
+
+  ```
+  ansible-playbook -i inventory playbook.yml --sudo 
+  ```
+
+### Using Vagrant to Deploy
+
+
 Vagrant can be used to provision servers on digitalocean.com.
 
 To launch a hubdrop server on digitalocean.com, first install the vagrant plugin:
