@@ -3,7 +3,7 @@
 #
 
 ---
-server_hostname: hubdrop.io
+server_hostname: hubdrop.org
 
 app_repo: http://github.com/hubdrop/app.git
 app_version: master
@@ -16,7 +16,7 @@ hubdrop_github_organization: drupalprojects
 hubdrop_drupal_username: hubdrop
 
 # apache
-apache_server_admin: admin@hubdrop.io
+apache_server_admin: admin@hubdrop.org
 
 apache_error_log_root: /var/hubdrop/logs/apache.error.log
 apache_access_log_root: /var/hubdrop/logs/apache.access.log
