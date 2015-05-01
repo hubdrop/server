@@ -3,7 +3,7 @@
 #
 
 ---
-- hosts: webserver 
+- hosts: webserver
   user: root
 
   vars_files:
@@ -81,7 +81,7 @@
 
     - name: HubDrop | Create cache folder
       file:
-        path=/var/hubdrop/cache
+        path={{ app_root }}/app/cache
         owner=hubdrop
         group=www-data
         state=directory
@@ -89,15 +89,15 @@
 
     - name: HubDrop | Create logs folder
       file:
-        path=/var/hubdrop/logs
+        path={{ app_root }}/app/logs
         owner=hubdrop
         group=www-data
         state=directory
         mode=0774
 
     - name: HubDrop | Setup ACL for logs and cache.
-      command: setfacl -R -m u:www-data:rwX -m u:hubdrop:rwX /var/hubdrop/cache /var/hubdrop/logs
-      command: setfacl -dR -m u:www-data:rwx -m u:hubdrop:rwx /var/hubdrop/cache /var/hubdrop/logs
+      command: setfacl -R -m u:www-data:rwX -m u:hubdrop:rwX {{ app_root }}/app/cache {{ app_root }}/app/logs
+      command: setfacl -dR -m u:www-data:rwx -m u:hubdrop:rwx {{ app_root }}/app/cache {{ app_root }}/app/logs
 
 
     - name: HubDrop | Set up `hubdrop` executable
