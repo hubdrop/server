@@ -134,7 +134,7 @@
       action: template src=templates/apache-vhost.j2 dest=/etc/apache2/sites-available/{{ server_hostname }}
 
     # @TODO: Should we just create the symlink ourselves to speed up provisioning?
-    - name: Apache | Enable hubdrop.io site.
+    - name: Apache | Enable hubdrop.org site.
       action: command a2ensite {{ server_hostname }}
       notify:
         - restart apache
