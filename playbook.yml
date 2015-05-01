@@ -146,6 +146,16 @@
     # JENKINS
     #
 
+    - name: Jenkins | Add apt key
+      apt_key:
+        url=https://jenkins-ci.org/debian/jenkins-ci.org.key
+        state=present
+
+    - name: Jenkins | Add apt repo
+      apt_repository:
+        repo='deb http://pkg.jenkins-ci.org/debian binary/'
+        state=present
+
     - name: Jenkins | Install jenkins apt package
       apt: pkg={{ item }} state=installed
       with_items:
