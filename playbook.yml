@@ -128,6 +128,7 @@
     # @TODO: Should we just remove it to speed up provisioning?
     - name: Apache | Disable the default site.
       action: command a2dissite default
+        removes=/etc/apache2/sites-enabled/default.conf
 
     - name: Apache | Save virtualhost configuration file.
       action: template src=templates/apache-vhost.j2 dest=/etc/apache2/sites-available/{{ server_hostname }}
