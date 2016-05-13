@@ -30,6 +30,7 @@
         - git
         - apache2
         - acl
+        - python-pycurl
 
     ##
     # HubDrop App
@@ -150,6 +151,7 @@
       apt_key:
         url=https://jenkins-ci.org/debian/jenkins-ci.org.key
         state=present
+        validate_certs=no
 
     - name: Jenkins | Add apt repo
       apt_repository:
