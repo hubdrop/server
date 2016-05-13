@@ -15,7 +15,17 @@
 
     - name: Setup | Message of the day.
       action: template src=templates/motd.j2 dest=/etc/update-motd.d/95-ansible mode=755
-
+    
+    - name: Set timezone variables
+      copy: content='America/New_York'
+            dest=/etc/timezone
+            owner=root
+            group=root
+            mode=0644
+            backup=yes
+      notify:
+        - update timezone
+        
     - name: Setup | Install required packages.
       action: apt pkg={{ item }} state=installed
       with_items:
@@ -208,3 +218,6 @@
 
     - name: restart jenkins
       action: service name=jenkins state=restarted
+
+    - name: update timezone
+      command: dpkg-reconfigure --frontend noninteractive tzdata
