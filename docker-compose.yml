@@ -19,12 +19,12 @@ services:
     environment:
       # Change to "dev" to enable symfony dev toolbar.
       SYMFONY_ENV: "prod"
-      VIRTUAL_HOST: hubdrop.production.cloud.thinkdrop.net
-      LETSENCRYPT_HOST: hubdrop.production.cloud.thinkdrop.net
+      VIRTUAL_HOST: www.hubdrop.org,hubdrop.org,hubdrop.cloud.thinkdrop.net
+      LETSENCRYPT_HOST: hubdrop.org,www.hubdrop.org,hubdrop.cloud.thinkdrop.net
       LETSENCRYPT_EMAIL: jon@thinkdrop.net
 
       # Must match username and password and permissions set in Jenkins admin.
-      JENKINS_URL: http://hubdrop:hubdrop@jenkins:8080
+      JENKINS_URL: http://hubdrop:khiofdsjpurpownpnfuio47@jenkins:8080
 
   jenkins:
     build:
@@ -42,9 +42,9 @@ services:
     - "./jenkins_home:/var/jenkins_home:z"
 
     environment:
-      VIRTUAL_HOST: hubdrop.production.jenkins.cloud.thinkdrop.net
+      VIRTUAL_HOST: jenkins.hubdrop.org,hubdrop.production.jenkins.cloud.thinkdrop.net
       VIRTUAL_PORT: 8080
-      LETSENCRYPT_HOST: hubdrop.production.jenkins.cloud.thinkdrop.net
+      LETSENCRYPT_HOST: jenkins.hubdrop.org,hubdrop.production.jenkins.cloud.thinkdrop.net
       LETSENCRYPT_EMAIL: jon@thinkdrop.net
 
 #
@@ -54,4 +54,9 @@ services:
 #    command: install
 #    volumes:
 #      - "../:/app:Z"
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
 
